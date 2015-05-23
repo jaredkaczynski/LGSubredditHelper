@@ -3,11 +3,14 @@
  */
 class Main {
     public static void main(String[] args) {
-       while(){
-
-       }
+        //String url = args[0];
+        String subreddit = "lgg2";
+        XMLScraper test = new XMLScraper();
+        test.grabContestURL(subreddit);
+        test.grabTopPosterInfo(subreddit);
     }
-    void isUpdateTime(){
+
+    void isUpdateTime() {
 
     }
 
