@@ -43,26 +43,7 @@ public class XMLScraper {
      * be the modpost if the automoderator is working properly
      */
     public String grabContestURL(String subreddit) {
-        String modPostID = null;
-        /*
-        try {
-            String html = Jsoup.connect(url).get().html();
-            File fXmlFile = new File(html);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
 
-            doc.getDocumentElement().normalize();
-
-            NodeList items = doc.getElementsByTagName("item");
-
-            NodeList postInfo = items.item(0).getChildNodes();
-
-            modPostURL = postInfo.item(1).getNodeValue();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         RestClient restClient = new HttpRestClient();
         restClient.setUserAgent("bot/1.0 by name");
 
@@ -93,10 +74,8 @@ public class XMLScraper {
             System.out.println("\n============== Basic subreddit submissions ==============");
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
 
-            //subms.of
-            //printSubmissionsList(submissionsSubreddit);
             if (submissionsSubreddit.get(0).getTitle().contains("Photography and Homescreen")) {
-                //System.out.println(submissionsSubreddit.get(0).getIdentifier());
+
                 return (submissionsSubreddit.get(0).getIdentifier());
             } else
                 return ("Error");
@@ -107,33 +86,14 @@ public class XMLScraper {
             e.printStackTrace();
         }
 
-        return (modPostID);
+        return (null);
     }
 
-    /*
-    public Array grabTopPosterInfo(String url){
-        try {
-            String html = Jsoup.connect(grabContestURL(url)).get().html();
-            File fXmlFile = new File(html);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            doc.getDocumentElement().normalize();
-
-            NodeList items = doc.getElementsByTagName("item");
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return();
-    }*/
-    public List<Comment>  grabTopPosterInfo(String url) {
+    public List<Comment> grabTopPosterInfo(String url) {
         RestClient restClient = new HttpRestClient();
         restClient.setUserAgent("bot/1.0 by name");
-        List<Comment> commentsSubmission = null;
-        if (url == "Error") {
+        List<Comment> commentsSubmission = new ArrayList<Comment>();
+        if (url.equalsIgnoreCase("empty")) {
             return (null);
         }
         // Connect the user
@@ -175,21 +135,33 @@ public class XMLScraper {
          * Here is where I grab the top homescreen related comment
          */
         List<Comment> returnedComments = new ArrayList<Comment>();
-        for (int i = 0; i < commentsSubmission.size(); i++) {
-            if (commentsSubmission.get(i).getBody().contains("omescreen")) {
-                System.out.println(commentsSubmission.get(i));
-                returnedComments.add(commentsSubmission.get(i));
+        int requiredsize = 2;
+        assert commentsSubmission != null;
+        for (Comment aCommentsSubmission : commentsSubmission) {
+            if (aCommentsSubmission.getBody().contains("omescreen")) {
+                System.out.println(aCommentsSubmission);
+                returnedComments.add(aCommentsSubmission);
                 break;
             }
         }
-        for (int j = 0; j < commentsSubmission.size(); j++) {
-            if (commentsSubmission.get(j).getBody().contains("hoto")) {
-                if (!returnedComments.contains(commentsSubmission.get(j))) {
-                    returnedComments.add(commentsSubmission.get(j));
+        requiredsize = requiredsize - returnedComments.size();
+        for (Comment aCommentsSubmission : commentsSubmission) {
+            if (aCommentsSubmission.getBody().contains("hoto")) {
+                if (!returnedComments.contains(aCommentsSubmission)) {
+                    returnedComments.add(aCommentsSubmission);
+                    //requiredsize--;
                     break;
                 }
             }
         }
+        /*if (requiredsize == 1) {
+            for (Comment aCommentsSubmission : commentsSubmission) {
+                if (aCommentsSubmission.getBody().contains("hoto")) {
+                    returnedComments.add(aCommentsSubmission);
+                    break;
+                }
+            }
+        }*/
         System.out.println(returnedComments);
         return (returnedComments);
     }
