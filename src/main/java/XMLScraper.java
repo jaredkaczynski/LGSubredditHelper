@@ -4,31 +4,22 @@ import com.github.jreddit.entity.User;
 import com.github.jreddit.exception.RedditError;
 import com.github.jreddit.exception.RetrievalFailedException;
 import com.github.jreddit.retrieval.Comments;
-import com.github.jreddit.retrieval.ExtendedComments;
-import com.github.jreddit.retrieval.ExtendedSubmissions;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.retrieval.params.*;
-import com.github.jreddit.utils.RedditConstants;
 import com.github.jreddit.utils.restclient.HttpRestClient;
 import com.github.jreddit.utils.restclient.RestClient;
 import examples.Authentication;
-import jdk.internal.org.xml.sax.SAXException;
 import org.json.simple.parser.ParseException;
-import org.jsoup.Jsoup;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.omg.CORBA.IMP_LIMIT;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class should do all XML Scraping work
@@ -123,7 +114,7 @@ public class XMLScraper {
             System.out.println("\n============== Basic submission comments ==============");
             commentsSubmission = coms.ofSubmission(grabContestURL(url), null, 0, 0, 100, CommentSort.TOP);
             Comments.printCommentTree(commentsSubmission);
-            Collections.reverse(commentsSubmission);
+            //Collections.reverse(commentsSubmission);
             System.out.println(commentsSubmission);
             System.out.println(commentsSubmission.get(1).getScore());
         } catch (RetrievalFailedException e) {
@@ -164,5 +155,62 @@ public class XMLScraper {
         }*/
         System.out.println(returnedComments);
         return (returnedComments);
+    }
+
+    public ArrayList<String> imageURL(String URL) {
+        ArrayList<String> imageURL = new ArrayList<String>();
+        Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+                + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+                + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)");
+
+        XMLScraper test = new XMLScraper();
+        List<Comment> topComments = test.grabTopPosterInfo(URL);
+        if (topComments.size() == 2) {
+            Matcher m = urlPattern.matcher(topComments.get(0).getBody());
+            if (m.find()) {
+                System.out.println(m.group());
+                imageURL.add(m.group());
+            }
+            //System.out.println(urlPattern.matcher(topComments.get(0).getBody()).find());
+        }
+        Matcher m = urlPattern.matcher(topComments.get(1).getBody());
+        if (m.find()) {
+            System.out.println(m.group());
+            imageURL.add(m.group());
+        }
+        return (imageURL);
+    }
+
+    public ArrayList<String> usernameRetrieval(String URL){
+        ArrayList<String> usernameArrayList = new ArrayList<String>();
+        XMLScraper test = new XMLScraper();
+        List<Comment> topComments = test.grabTopPosterInfo(URL);
+        usernameArrayList.add(topComments.get(0).getAuthor());
+        usernameArrayList.add(topComments.get(1).getAuthor());
+        return (usernameArrayList);
+    }
+
+    public ArrayList<String> scoreRetrieval(String URL){
+        ArrayList<String>pointsArrayList = new ArrayList<String>();
+        XMLScraper test = new XMLScraper();
+        List<Comment> topComments = test.grabTopPosterInfo(URL);
+        pointsArrayList.add(topComments.get(0).getScore().toString());
+        pointsArrayList.add(topComments.get(1).getScore().toString());
+        return (pointsArrayList);
+    }
+
+    public String[][] returnCommentInformation(String URL) {
+        String[][] returnInforArray = new String[3][5];
+        ArrayList<String> imageURLArrayList = imageURL(URL);
+        ArrayList<String> usernameArrayList = usernameRetrieval(URL);
+        ArrayList<String> scoreArrayList = scoreRetrieval(URL);
+        returnInforArray[0][0] = imageURLArrayList.get(0).substring(1, imageURLArrayList.get(0).length()-1);
+        returnInforArray[1][0] = imageURLArrayList.get(1).substring(1, imageURLArrayList.get(1).length()-1);
+        returnInforArray[0][1] = usernameArrayList.get(0);
+        returnInforArray[1][1] = usernameArrayList.get(1);
+        returnInforArray[0][2] = scoreArrayList.get(0);
+        returnInforArray[1][2] = scoreArrayList.get(1);
+        System.out.println(Arrays.deepToString(returnInforArray));
+        return returnInforArray;
     }
 }
