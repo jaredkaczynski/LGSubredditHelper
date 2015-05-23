@@ -6,7 +6,7 @@ class Main {
         //String url = args[0];
         String subreddit = "lgg2";
         XMLScraper test = new XMLScraper();
-        test.grabContestURL(subreddit);
+        //test.grabContestURL(subreddit);
         test.grabTopPosterInfo(subreddit);
     }
 

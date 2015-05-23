@@ -26,6 +26,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -127,11 +129,12 @@ public class XMLScraper {
         }
         return();
     }*/
-    public Comments grabTopPosterInfo(String url) {
+    public List<Comment>  grabTopPosterInfo(String url) {
         RestClient restClient = new HttpRestClient();
         restClient.setUserAgent("bot/1.0 by name");
-        if(url == "Error"){
-            return(null);
+        List<Comment> commentsSubmission = null;
+        if (url == "Error") {
+            return (null);
         }
         // Connect the user
         User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
@@ -158,14 +161,36 @@ public class XMLScraper {
 
             // Retrieve comments of a submission
             System.out.println("\n============== Basic submission comments ==============");
-            List<Comment> commentsSubmission = coms.ofSubmission(url, null, 0, 8, 100, CommentSort.TOP);
+            commentsSubmission = coms.ofSubmission(grabContestURL(url), null, 0, 0, 100, CommentSort.TOP);
             Comments.printCommentTree(commentsSubmission);
-
+            Collections.reverse(commentsSubmission);
+            System.out.println(commentsSubmission);
+            System.out.println(commentsSubmission.get(1).getScore());
         } catch (RetrievalFailedException e) {
             e.printStackTrace();
         } catch (RedditError e) {
             e.printStackTrace();
         }
-        return (null);
+        /**
+         * Here is where I grab the top homescreen related comment
+         */
+        List<Comment> returnedComments = new ArrayList<Comment>();
+        for (int i = 0; i < commentsSubmission.size(); i++) {
+            if (commentsSubmission.get(i).getBody().contains("omescreen")) {
+                System.out.println(commentsSubmission.get(i));
+                returnedComments.add(commentsSubmission.get(i));
+                break;
+            }
+        }
+        for (int j = 0; j < commentsSubmission.size(); j++) {
+            if (commentsSubmission.get(j).getBody().contains("hoto")) {
+                if (!returnedComments.contains(commentsSubmission.get(j))) {
+                    returnedComments.add(commentsSubmission.get(j));
+                    break;
+                }
+            }
+        }
+        System.out.println(returnedComments);
+        return (returnedComments);
     }
 }
