@@ -1,5 +1,6 @@
 import com.github.jreddit.entity.User;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
@@ -9,17 +10,18 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -72,7 +74,7 @@ public class CSSUpdater {
         //        .execute().returnContent().asString());
 
         //CloseableHttpClient httpclient = HttpClients.createDefault();
-        BasicCookieStore cookieStore = new BasicCookieStore();
+        /*BasicCookieStore cookieStore = new BasicCookieStore();
         BasicClientCookie cookie = new BasicClientCookie("Cookie", "reddit_session=" + user.getCookie());
         cookie.setDomain(".reddit.com");
         cookie.setPath("/");
@@ -90,13 +92,47 @@ public class CSSUpdater {
         } finally {
             response1.close();
         }
-        return response1.toString();
+        return response1.toString();*/
+
+        HttpClient client = new DefaultHttpClient();
+        URL url = null;
+        try {
+            url = new URL("http://www.reddit.com/r/" + subreddit + "/about/edit.json");
+
+
+            HttpGet httpGet = new HttpGet(String.valueOf(url));
+            client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, System.getProperty("User-Agent: LGG Bot (by /u/amdphenom"));
+            httpGet.addHeader("Cookie", "reddit_session=" + user.getCookie());
+            httpGet.addHeader("uh", user.getModhash());
+
+            HttpResponse response = client.execute(httpGet);
+
+            HttpEntity ht = response.getEntity();
+
+            BufferedHttpEntity buf = new BufferedHttpEntity(ht);
+
+            InputStream is = buf.getContent();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(is));
+
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            //System.out.println(total.toString());
+            return total.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return("fail");
     }
 
 
     public void getAndChangeSubredditInfo(String subreddit) throws IOException {
         //String out = new Scanner(new URL("https://www.reddit.com/r/" + subreddit + "/about/edit.json").openStream(), "UTF-8").useDelimiter("\\A").next();
-        System.out.println(getSideBar(subreddit) + "Sideafsgs");
+        System.out.println(getSideBar(subreddit));
         JSONObject obj = new JSONObject(getSideBar(subreddit));
         String[] subredditInfo = new String[30];
         JSONArray arr = obj.getJSONArray("data");
