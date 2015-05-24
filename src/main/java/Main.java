@@ -19,36 +19,39 @@ class Main {
         //String url = args[0];
         performUpdate("lgg2");
     }
-    static void performUpdate(String subredditName){
+
+    static void performUpdate(String subredditName) {
         XMLScraper test = new XMLScraper();
         test.connectUser();
 
-        String[][] commentInformation = test.returnCommentInformation(subredditName);
+        String[][] commentInformation = test.returnCommentInformation(subredditName, "");
+        String[][] currentCommentInformation = test.returnCommentInformation(subredditName, "current");
         CSSUpdater cssUpdater = new CSSUpdater(test.getUser());
         try {
-            cssUpdater.getAndChangeSubredditInfo(subredditName);
+            cssUpdater.updateSidebar(commentInformation, currentCommentInformation, subredditName, cssUpdater.getSubredditInfo(subredditName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         ImageResize imageResizer = new ImageResize();
         ImageUploader uploader = new ImageUploader(test.getUser());
         try {
-            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]),"winner-screenshot",subredditName);
+            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]), "winner-screenshot", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[1][0]),"headerimg",subredditName);
+            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[1][0]), "headerimg", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
             // retrieve image
-            BufferedImage bi =  imageToBufferedImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]));
+            BufferedImage bi = imageToBufferedImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]));
             File outputfile = new File("saved.png");
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException e) {
@@ -56,16 +59,18 @@ class Main {
 
 
     }
+
     public static BufferedImage imageToBufferedImage(Image im) {
         System.out.println(im.getWidth(null));
         System.out.println(im.getHeight(null));
         BufferedImage bi = new BufferedImage
-                (im.getWidth(null),im.getHeight(null),BufferedImage.TYPE_INT_RGB);
+                (im.getWidth(null), im.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics bg = bi.getGraphics();
         bg.drawImage(im, 0, 0, null);
         bg.dispose();
         return bi;
     }
+
     void isUpdateTime() {
 
     }

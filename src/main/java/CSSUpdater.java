@@ -41,7 +41,11 @@ public class CSSUpdater {
         user = tempUser;
     }
 
-    public void updateSidebar(String subreddit) throws IOException {
+    public void updateSidebar(String[][] commentInformation,String[][] currentCommentInformation, String subreddit, ArrayList<ArrayList<String>> valueArray) throws IOException {
+
+        ArrayList<String> jsonElementName = valueArray.get(0);
+        ArrayList<String> jsonElementValue = valueArray.get(1);
+
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/api/site_admin");
@@ -51,7 +55,23 @@ public class CSSUpdater {
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
         nvps.addPart("r", new StringBody(subreddit));
         nvps.addPart("uh", new StringBody(user.getModhash()));
-        nvps.addPart("img_type", new StringBody("png"));
+
+        for(int i = 0; i<jsonElementName.size(); i++){
+            if(!jsonElementName.get(i).equalsIgnoreCase("description")) {
+                nvps.addPart(jsonElementName.get(i), new StringBody(jsonElementValue.get(i)));
+            }else
+            System.out.println(i);
+        }
+
+        String decriptionEdit = jsonElementValue.get(5);
+
+        for(int i = 0; i<3; i++){
+            for(int j = 0; j<2; j++){
+                decriptionEdit.replace(commentInformation[j][i],currentCommentInformation[j][i]);
+            }
+        }
+        nvps.addPart(jsonElementName.get(5),new StringBody(decriptionEdit));
+
         httpPost.setEntity(nvps);
 
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
@@ -104,26 +124,24 @@ public class CSSUpdater {
     }
 
 
-    public void getAndChangeSubredditInfo(String subreddit) throws IOException, ParseException {
-        //String out = new Scanner(new URL("https://www.reddit.com/r/" + subreddit + "/about/edit.json").openStream(), "UTF-8").useDelimiter("\\A").next();
+    public ArrayList<ArrayList<String>> getSubredditInfo(String subreddit) throws IOException, ParseException {
 
         JSONObject obj = new JSONObject(getSideBar(subreddit));
         ArrayList<String> jsonElementName = new ArrayList();
         ArrayList<String> jsonElementValue = new ArrayList();
         obj = obj.getJSONObject("data");
-
-        System.out.println(obj);
         String[] elementNames = JSONObject.getNames(obj);
 
         for(int i = 0; i<obj.length(); i++){
             jsonElementName.add(elementNames[i]);
             jsonElementValue.add(obj.get(elementNames[i]).toString());
-            //System.out.println(obj.get(elementNames[i]).toString());
         }
-        Set keySet = obj.keySet();
 
-        System.out.println("test" + jsonElementName.toString());
-        System.out.println("test" + jsonElementValue.toString());
+        ArrayList<ArrayList<String>> tempArray = new ArrayList<ArrayList<String>>();
+        tempArray.add(jsonElementName);
+        tempArray.add(jsonElementValue);
+        return tempArray;
+
     }
 
     private String readFile(String path, Charset encoding)
