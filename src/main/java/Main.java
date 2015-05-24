@@ -23,6 +23,12 @@ class Main {
         test.connectUser();
 
         String[][] commentInformation = test.returnCommentInformation(subredditName);
+        CSSUpdater cssUpdater = new CSSUpdater(test.getUser());
+        try {
+            cssUpdater.getAndChangeSubredditInfo(subredditName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         ImageResize imageResizer = new ImageResize();
         ImageUploader uploader = new ImageUploader(test.getUser());
         try {

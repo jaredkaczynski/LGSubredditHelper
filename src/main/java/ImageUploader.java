@@ -59,13 +59,6 @@ public class ImageUploader {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/r/"+subreddit+"/api/upload_sr_img");
-        CookieStore cookieStore = new BasicCookieStore();
-        //Cookie("reddit","Reddit Cookie",user.getCookie());
-
-        BasicClientCookie stdCookie = new BasicClientCookie("RedditCookie", user.getCookie());
-        //java.util.List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        //java.util.List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        cookieStore.addCookie(stdCookie);
         MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
         //httpPost.setHeader("Cookie","reddit_session=" + user.getCookie());
