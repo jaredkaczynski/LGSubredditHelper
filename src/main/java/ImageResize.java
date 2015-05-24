@@ -15,6 +15,8 @@ public class ImageResize {
 
 
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
+        if (urlTest.endsWith(".jp"))
+            urlTest = urlTest + "g";
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_DEFAULT);
         return scaleImage;

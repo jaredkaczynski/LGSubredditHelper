@@ -51,7 +51,6 @@ public class CSSUpdater {
         HttpPost httpPost = new HttpPost("https://www.reddit.com/api/site_admin");
         MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
-        //httpPost.setHeader("Cookie","reddit_session=" + user.getCookie());
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
         nvps.addPart("r", new StringBody(subreddit));
         nvps.addPart("uh", new StringBody(user.getModhash()));
@@ -62,12 +61,23 @@ public class CSSUpdater {
             }else
             System.out.println(i);
         }
-
+        System.out.println(jsonElementName);
+        nvps.addPart("lang",new StringBody(jsonElementValue.get(6)));
+        nvps.addPart("api_type",new StringBody("json"));
+        //nvps.addPart("captcha",new StringBody("no"));
+        nvps.addPart("css_on_cname",new StringBody("true"));
+        nvps.addPart("link_type",new StringBody(jsonElementValue.get(21)));
+        nvps.addPart("name",new StringBody(jsonElementValue.get(7)));
+        nvps.addPart("show_cname_sidebar",new StringBody("true"));
+        nvps.addPart("sr",new StringBody(subreddit));
+        nvps.addPart("suggested_comment_sort",new StringBody("hot"));
+        nvps.addPart("type", new StringBody("public"));
         String decriptionEdit = jsonElementValue.get(5);
 
         for(int i = 0; i<3; i++){
             for(int j = 0; j<2; j++){
                 decriptionEdit.replace(commentInformation[j][i],currentCommentInformation[j][i]);
+            System.out.println(commentInformation[j][i] + currentCommentInformation[j][i]);
             }
         }
         nvps.addPart(jsonElementName.get(5),new StringBody(decriptionEdit));
