@@ -1,5 +1,6 @@
 import com.github.jreddit.entity.Comment;
 import com.github.jreddit.retrieval.Comments;
+import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,6 +28,8 @@ class Main {
         try {
             cssUpdater.getAndChangeSubredditInfo(subredditName);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         ImageResize imageResizer = new ImageResize();

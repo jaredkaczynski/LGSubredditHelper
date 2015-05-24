@@ -20,6 +20,8 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -27,9 +29,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by razrs on 5/23/2015.
@@ -68,32 +68,6 @@ public class CSSUpdater {
     }
 
     private String getSideBar(String subreddit) throws IOException {
-        // The fluent API relieves the user from having to deal with manual deallocation of system
-        // resources at the cost of having to buffer response content in memory in some cases.
-        //return(Request.Get("http://reddit.com/r/" + subreddit + "/sidebar")
-        //        .execute().returnContent().asString());
-
-        //CloseableHttpClient httpclient = HttpClients.createDefault();
-        /*BasicCookieStore cookieStore = new BasicCookieStore();
-        BasicClientCookie cookie = new BasicClientCookie("Cookie", "reddit_session=" + user.getCookie());
-        cookie.setDomain(".reddit.com");
-        cookie.setPath("/");
-        cookieStore.addCookie(cookie);
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).setUserAgent("User-Agent: LGG Bot (by /u/amdphenom").build();
-        HttpGet httpGet = new HttpGet("http://www.reddit.com/r/" + subreddit + "/about/edit.json" + "?uh=" + user.getModhash());
-
-        CloseableHttpResponse response1 = client.execute(httpGet);
-        try {
-            System.out.println(response1.getStatusLine());
-            HttpEntity entity1 = response1.getEntity();
-            // do something useful with the response body
-            // and ensure it is fully consumed
-            EntityUtils.consume(entity1);
-        } finally {
-            response1.close();
-        }
-        return response1.toString();*/
-
         HttpClient client = new DefaultHttpClient();
         URL url = null;
         try {
@@ -130,40 +104,26 @@ public class CSSUpdater {
     }
 
 
-    public void getAndChangeSubredditInfo(String subreddit) throws IOException {
+    public void getAndChangeSubredditInfo(String subreddit) throws IOException, ParseException {
         //String out = new Scanner(new URL("https://www.reddit.com/r/" + subreddit + "/about/edit.json").openStream(), "UTF-8").useDelimiter("\\A").next();
-        System.out.println(getSideBar(subreddit));
+
         JSONObject obj = new JSONObject(getSideBar(subreddit));
-        String[] subredditInfo = new String[30];
-        JSONArray arr = obj.getJSONArray("data");
-        System.out.println(arr.toString());
+        ArrayList<String> jsonElementName = new ArrayList();
+        ArrayList<String> jsonElementValue = new ArrayList();
+        obj = obj.getJSONObject("data");
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        /*
-        HttpPost httpPost = new HttpPost("https://www.reddit.com/api/site_admin");
-        MultipartEntity nvps = new MultipartEntity();
-        httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
-        //httpPost.setHeader("Cookie","reddit_session=" + user.getCookie());
-        httpPost.addHeader("Cookie","reddit_session=" + user.getCookie());
-        nvps.addPart("r", new StringBody(subreddit));
-        nvps.addPart("allow_top", new StringBody("true"));
-        nvps.addPart("collapse_deleted_comments", new StringBody("false"));
-        nvps.addPart("comment_score_hide_mins", new StringBody("0"));
-        nvps.addPart("comment_score_hide_mins", new StringBody("0"));
-        nvps.addPart("description",new StringBody(getSideBar(subreddit)));
-        nvps.addPart("exclude_banned_modqueue",new StringBody("true"));
-        nvps.addPart("header-title",new StringBody("true"));
-        CloseableHttpResponse response2 = httpclient.execute(httpPost);
+        System.out.println(obj);
+        String[] elementNames = JSONObject.getNames(obj);
 
-        try {
-            System.out.println(response2.getStatusLine());
-            HttpEntity entity2 = response2.getEntity();
-            // do something useful with the response body
-            // and ensure it is fully consumed
-            EntityUtils.consume(entity2);
-        } finally {
-            response2.close();
-        }*/
+        for(int i = 0; i<obj.length(); i++){
+            jsonElementName.add(elementNames[i]);
+            jsonElementValue.add(obj.get(elementNames[i]).toString());
+            //System.out.println(obj.get(elementNames[i]).toString());
+        }
+        Set keySet = obj.keySet();
+
+        System.out.println("test" + jsonElementName.toString());
+        System.out.println("test" + jsonElementValue.toString());
     }
 
     private String readFile(String path, Charset encoding)
