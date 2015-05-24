@@ -35,25 +35,12 @@ import java.util.*;
  */
 public class ImageUploader {
     private final String USER_AGENT = "User-Agent: LGG Bot (by /u/amdphenom)";
+    User user;
+    public ImageUploader(User userTemp) {
+        user = userTemp;
+    }
 
     public void uploadImage(Image imageType, String imageUploadName, String subreddit) throws IOException {
-        RestClient restClient = new HttpRestClient();
-
-        restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
-        // Connect the user
-        User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
-        try {
-            user.connect();
-
-        } catch (IOException e1) {
-            System.err.println("I/O Exception occured when attempting to connect user.");
-            e1.printStackTrace();
-            //return;
-        } catch (ParseException e1) {
-            System.err.println("I/O Exception occured when attempting to connect user.");
-            e1.printStackTrace();
-            //return;
-        }
         System.out.println(user.getCookie());
         // construct the buffered image
         BufferedImage bImage = new BufferedImage(imageType.getWidth(null), imageType.getHeight(null), BufferedImage.TYPE_INT_RGB);

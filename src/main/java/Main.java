@@ -20,11 +20,19 @@ class Main {
     }
     static void performUpdate(String subredditName){
         XMLScraper test = new XMLScraper();
+        test.connectUser();
+
         String[][] commentInformation = test.returnCommentInformation(subredditName);
         ImageResize imageResizer = new ImageResize();
-        ImageUploader uploader = new ImageUploader();
+        ImageUploader uploader = new ImageUploader(test.getUser());
         try {
             uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]),"winner-screenshot",subredditName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[1][0]),"headerimg",subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,7 +10,7 @@ import com.github.jreddit.utils.restclient.HttpRestClient;
 import com.github.jreddit.utils.restclient.RestClient;
 import examples.Authentication;
 import org.json.simple.parser.ParseException;
-import org.omg.CORBA.IMP_LIMIT;
+
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -27,19 +27,11 @@ import java.util.regex.Pattern;
  * and whether it is time to update the images or not
  */
 public class XMLScraper {
-
-    /**
-     * @param subreddit
-     * @return This grabs the top post from the subreddit which should
-     * be the modpost if the automoderator is working properly
-     */
-    public String grabContestURL(String subreddit) {
-
-        RestClient restClient = new HttpRestClient();
+    RestClient restClient = new HttpRestClient();
+    User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
+    public void connectUser() {
         restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
-
-        // Connect the user
-        User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
+        user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
         try {
             user.connect();
         } catch (IOException e1) {
@@ -51,6 +43,13 @@ public class XMLScraper {
             e1.printStackTrace();
             //return;
         }
+    }
+    /**
+     * @param subreddit
+     * @return This grabs the top post from the subreddit which should
+     * be the modpost if the automoderator is working properly
+     */
+    public String grabContestURL(String subreddit) {
 
         try {
 
@@ -81,24 +80,9 @@ public class XMLScraper {
     }
 
     public List<Comment> grabTopPosterInfo(String url) {
-        RestClient restClient = new HttpRestClient();
-        restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
         List<Comment> commentsSubmission = new ArrayList<Comment>();
         if (url.equalsIgnoreCase("empty")) {
             return (null);
-        }
-        // Connect the user
-        User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
-        try {
-            user.connect();
-        } catch (IOException e1) {
-            System.err.println("I/O Exception occured when attempting to connect user.");
-            e1.printStackTrace();
-            //return;
-        } catch (ParseException e1) {
-            System.err.println("I/O Exception occured when attempting to connect user.");
-            e1.printStackTrace();
-            //return;
         }
 
         try {
@@ -156,7 +140,9 @@ public class XMLScraper {
         System.out.println(returnedComments);
         return (returnedComments);
     }
-
+    public User getUser(){
+        return user;
+    }
     public ArrayList<String> imageURL(String URL) {
         ArrayList<String> imageURL = new ArrayList<String>();
         Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
