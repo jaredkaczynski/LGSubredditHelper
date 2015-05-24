@@ -44,6 +44,7 @@ public class ImageUploader {
         User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
         try {
             user.connect();
+
         } catch (IOException e1) {
             System.err.println("I/O Exception occured when attempting to connect user.");
             e1.printStackTrace();
@@ -68,34 +69,9 @@ public class ImageUploader {
         ImageIO.write(bImage, "png", new File("temp.png"));
         File tempImageFile = new File("temp.png");
         FileBody fileBody = new FileBody(tempImageFile);
-        /*final String IMAGE_SEND_ID = "/r/"+subreddit+"/api/upload_sr_img";
-        JSONObject object = (JSONObject) restClient.post(
-                "r=" + subreddit + "&uh=" + user.getModhash() + "&formid=image-upload" + "&img_type=png" + "&name=" + imageUploadName,
-                IMAGE_SEND_ID,
-                user.getCookie()
-        ).getResponseObject();
-        */
-        //object.toJSONString().length()
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("http://reddit.com/r/"+subreddit+"/api/upload_sr_img");
-        CloseableHttpResponse response1 = httpclient.execute(httpGet);
-// The underlying HTTP connection is still held by the response object
-// to allow the response content to be streamed directly from the network socket.
-// In order to ensure correct deallocation of system resources
-// the user MUST call CloseableHttpResponse#close() from a finally clause.
-// Please note that if response content is not fully consumed the underlying
-// connection cannot be safely re-used and will be shut down and discarded
-// by the connection manager.
-        try {
-            System.out.println(response1.getStatusLine());
-            HttpEntity entity1 = response1.getEntity();
-            // do something useful with the response body
-            // and ensure it is fully consumed
-            EntityUtils.consume(entity1);
-        } finally {
-            response1.close();
-        }
-        HttpPost httpPost = new HttpPost("http://reddit.com/r/"+subreddit+"/api/upload_sr_img");
+
+        HttpPost httpPost = new HttpPost("https://www.reddit.com/r/"+subreddit+"/api/upload_sr_img");
         CookieStore cookieStore = new BasicCookieStore();
         //Cookie("reddit","Reddit Cookie",user.getCookie());
 
@@ -104,32 +80,16 @@ public class ImageUploader {
         //java.util.List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         cookieStore.addCookie(stdCookie);
         MultipartEntity nvps = new MultipartEntity();
-        /*httpPost.setHeader("Cookie",user.getCookie());
-        httpPost.setHeader("r",subreddit);
-        httpPost.setHeader("uh",user.getModhash());
-        httpPost.setHeader("formid","image-upload"));
-        httpPost.setHeader("img_type","png"));
-        httpPost.setHeader("name",imageUploadName));*/
-        /*nvps.add(new BasicNameValuePair("Cookie", user.getCookie()));
-        nvps.add(new BasicNameValuePair("r",subreddit));
-        nvps.add(new BasicNameValuePair("uh",user.getModhash()));
-        nvps.add(new BasicNameValuePair("formid","image-upload"));
-        nvps.add(new BasicNameValuePair("img_type","png"));
-        nvps.add(new BasicNameValuePair("name",imageUploadName));
-        httpPost.setEntity(new UrlEncodedFormEntity(nvps));*/
-
-        nvps.addPart("Cookie", new StringBody(user.getCookie()));
+        httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
+        //httpPost.setHeader("Cookie","reddit_session=" + user.getCookie());
+        httpPost.addHeader("Cookie","reddit_session=" + user.getCookie());
         nvps.addPart("r", new StringBody(subreddit));
         nvps.addPart("uh", new StringBody(user.getModhash()));
         nvps.addPart("formid", new StringBody("image-upload"));
         nvps.addPart("img_type", new StringBody("png"));
         nvps.addPart("name", new StringBody(imageUploadName));
         nvps.addPart("file",fileBody);
-        //httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-
-        //httpPost.setEntity();
-        //String stringContent = await response.Content.ReadAsStringAsync();
-
+        httpPost.setEntity(nvps);
 
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
 
@@ -143,18 +103,6 @@ public class ImageUploader {
             response2.close();
         }
 
-
-        //System.out.println(Request.Post("http://reddit.com/r/" + subreddit + "/api/upload_sr_img"))
-
-                /*Unirest.post("http://reddit.com/r/" + subreddit + "/api/upload_sr_img")
-
-                .field("file", new File("temp.png"))
-                .field("header", "0")
-                .field("img_type", "png")
-                .field("name", imageUploadName)
-                .field("X-Modhash", user.getModhash())
-                .field("upload_type", "img")
-                .asJson());*/
     }
 
 }
