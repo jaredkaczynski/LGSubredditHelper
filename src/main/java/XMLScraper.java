@@ -36,7 +36,7 @@ public class XMLScraper {
     public String grabContestURL(String subreddit) {
 
         RestClient restClient = new HttpRestClient();
-        restClient.setUserAgent("bot/1.0 by name");
+        restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
 
         // Connect the user
         User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
@@ -82,7 +82,7 @@ public class XMLScraper {
 
     public List<Comment> grabTopPosterInfo(String url) {
         RestClient restClient = new HttpRestClient();
-        restClient.setUserAgent("bot/1.0 by name");
+        restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
         List<Comment> commentsSubmission = new ArrayList<Comment>();
         if (url.equalsIgnoreCase("empty")) {
             return (null);

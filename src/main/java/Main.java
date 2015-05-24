@@ -18,12 +18,13 @@ class Main {
         //String url = args[0];
         performUpdate("lgg2");
     }
-    static void performUpdate(String URL){
+    static void performUpdate(String subredditName){
         XMLScraper test = new XMLScraper();
-        String[][] commentInformation = test.returnCommentInformation(URL);
+        String[][] commentInformation = test.returnCommentInformation(subredditName);
         ImageResize imageResizer = new ImageResize();
+        ImageUploader uploader = new ImageUploader();
         try {
-            imageResizer.resizeHomeScreenImage(commentInformation[0][0]);
+            uploader.uploadImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]),"winner-screenshot",subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +36,8 @@ class Main {
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException e) {
         }
+
+
     }
     public static BufferedImage imageToBufferedImage(Image im) {
         System.out.println(im.getWidth(null));

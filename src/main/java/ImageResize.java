@@ -17,17 +17,4 @@ public class ImageResize {
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_DEFAULT);
         return scaleImage;
     }
-
-    /*public Image resizePhotoImage(String URL) throws IOException {
-        ImageIcon icon = new ImageIcon(URL);
-
-            Image image = ImageIO.read(new URL(URL));
-
-        //Image scaleImage = null;
-        //if (icon.getIconWidth() > 2600) {
-        Image scaleImage = image.getScaledInstance(1920, 1920 * image.getHeight(null) / image.getWidth(null)
-                , Image.SCALE_DEFAULT);
-        //}
-        return scaleImage;
-    }*/
 }
