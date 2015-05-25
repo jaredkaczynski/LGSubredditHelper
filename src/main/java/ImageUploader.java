@@ -1,34 +1,20 @@
 import com.github.jreddit.entity.User;
-import com.github.jreddit.utils.restclient.HttpRestClient;
-import com.github.jreddit.utils.restclient.RestClient;
-import examples.Authentication;
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.SetCookie;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by razrs on 5/23/2015.
@@ -52,7 +38,7 @@ public class ImageUploader {
         bImageGraphics.drawImage(imageType, null, null);
 
 // cast it to rendered image
-        RenderedImage rImage = (RenderedImage) bImage;
+        RenderedImage rImage = bImage;
         ImageIO.write(bImage, "jpg", new File("temp.jpg"));
         File tempImageFile = new File("temp.jpg");
         FileBody fileBody = new FileBody(tempImageFile);

@@ -1,22 +1,13 @@
-
-
-import org.eclipse.jgit.lib.BitmapIndex;
-import org.eclipse.jgit.lib.BitmapIndex.Bitmap;
-
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -42,14 +33,14 @@ public class ImageResize {
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_DEFAULT);
         if(image.getWidth(null)>2000){
-            scaleImage = image.getScaledInstance(1920,((1080 * image.getWidth(null))/image.getHeight(null)),Image.SCALE_FAST);
+            scaleImage = image.getScaledInstance(1920,((1920 * image.getWidth(null))/image.getHeight(null)),Image.SCALE_FAST);
         }
         Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
         ImageWriter writer = (ImageWriter)iter.next();
 // instantiate an ImageWriteParam object with default compression options
         ImageWriteParam iwp = writer.getDefaultWriteParam();
         iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        iwp.setCompressionQuality(0.5f);   // an integer between 0 and 1
+        iwp.setCompressionQuality(0.8f);   // an integer between 0 and 1
 // 1 specifies minimum compression and maximum quality
         IIOImage compressedImage = new IIOImage(imageToBufferedImage(scaleImage),null,null);
         scaleImage = convertRenderedImage(compressedImage.getRenderedImage());

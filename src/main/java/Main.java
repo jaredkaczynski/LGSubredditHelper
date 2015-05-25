@@ -1,5 +1,3 @@
-import com.github.jreddit.entity.Comment;
-import com.github.jreddit.retrieval.Comments;
 import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
@@ -7,9 +5,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by razrs on 5/23/2015.
@@ -24,8 +19,9 @@ class Main {
         XMLScraper test = new XMLScraper();
         test.connectUser();
 
-        String[][] commentInformation = test.returnCommentInformation(subredditName, "");
         String[][] currentCommentInformation = test.returnCommentInformation(subredditName, "current");
+        String[][] commentInformation = test.returnCommentInformation(subredditName, "");
+
         CSSUpdater cssUpdater = new CSSUpdater(test.getUser());
         try {
             cssUpdater.updateSidebar(commentInformation, currentCommentInformation, subredditName, cssUpdater.getSubredditInfo(subredditName));

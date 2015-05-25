@@ -1,35 +1,31 @@
 import com.github.jreddit.entity.User;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.fluent.Form;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.*;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by razrs on 5/23/2015.
@@ -52,10 +48,10 @@ public class CSSUpdater {
         MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
-        nvps.addPart("r", new StringBody(subreddit));
+        //nvps.addPart("r", new StringBody(subreddit));
         nvps.addPart("uh", new StringBody(user.getModhash()));
         nvps.addPart("collapse_deleted_comments", new StringBody(jsonElementValue.get(19)));
-        nvps.addPart("lang", new StringBody(jsonElementValue.get(6)));
+        nvps.addPart("lang", new StringBody("en_US"));
         nvps.addPart("comment_score_hide_mins", new StringBody(jsonElementValue.get(17)));
         nvps.addPart("captcha", new StringBody("false"));
         nvps.addPart("iden", new StringBody("false"));
@@ -83,42 +79,49 @@ public class CSSUpdater {
         nvps.addPart("name", new StringBody(jsonElementValue.get(7)));
         nvps.addPart("show_cname_sidebar", new StringBody("true"));
         nvps.addPart("sr", new StringBody(subreddit));
-        nvps.addPart("suggested_comment_sort", new StringBody("hot"));
+        nvps.addPart("suggested_comment_sort", new StringBody("none"));
         nvps.addPart("type", new StringBody("public"));
-        String decriptionEdit = jsonElementValue.get(5);
-
-        /*for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 2; j++) {
-
-                System.out.println(commentInformation[j][i] + currentCommentInformation[j][i]);
-            }
-
-        }*/
-        decriptionEdit = decriptionEdit.replaceAll("Homescreen of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+        String descriptionRename = jsonElementValue.get(5);
+        descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
                 "Homescreen of the Week\n" + "#### \\/u\\/"
                         + currentCommentInformation[0][1]
                         + " with "
                         + currentCommentInformation[0][2]);
-        /*decriptionEdit = decriptionEdit.replaceAll("\\*\\[Photo]\\([0-9A-Za-z:\\/.]*\\) • \\/u\\/[A-Za-z0-9]* \\\\\\*\\\\\\*[0-9]* points\\\\\\*\\\\\\*",
-                "*[Photo]("
+        descriptionRename = descriptionRename.replaceFirst("\\[Photo]\\([0-9A-Za-z:\\/.]*\\)\\* [^\\x00-\\x7F] \\/u\\/[A-Za-z0-9]*",
+                // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
+                "[Photo]("
                         + currentCommentInformation[1][0]
-                        + ") • /u/"
-                        + currentCommentInformation[1][1])
-                        + " \\" + "*" + "\\" +"*"
-                        + currentCommentInformation[1][2]
-                        + " points " + "\\" + "*" + "\\" +"*";*/
-        decriptionEdit = decriptionEdit.replaceAll("Photo of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+                        + ")* • /u/"
+                        + currentCommentInformation[1][1]);
+                        //+ " \\" + "*" + "\\" +"*"
+                        //+ "\\*\\*"
+                        //+ currentCommentInformation[1][2]
+                        //+ " points";
+        descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
+                commentInformation[0][3]).replace(",","");
+
+        descriptionRename = descriptionRename.replaceAll("[0-9]* [A-z]* [0-9][0-9][0-9][0-9]",
+                          commentInformation[0][3].replace(",","").replaceAll(" [A-Za-z]* ", "").replaceAll("[0-9][0-9][0-9][0-9]", "")
+                        + commentInformation[0][3].replace(",","").replaceAll("[A-z]* [0-9]* ",""));
+
+        descriptionRename = descriptionRename.replaceFirst("\\[Homescreen]\\([0-9A-Za-z:\\/.]*\\)\\* [^\\x00-\\x7F] \\/u\\/[A-Za-z0-9]*",
+                // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
+                "[Homescreen]("
+                        + currentCommentInformation[0][0]
+                        + ")* • /u/"
+                        + currentCommentInformation[0][1]);
+                //+ "\\\\*\\\\*"
+                //+ currentCommentInformation[0][2]
+                //+ " points";
+        descriptionRename = descriptionRename.replaceFirst("Photo of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
                 "Photo of the Week\n" + "#### \\/u\\/"
                         + currentCommentInformation[1][1]
                         + " with "
                         + currentCommentInformation[1][2]);
-
-        nvps.addPart(jsonElementName.get(5), new StringBody(decriptionEdit));
-
+        nvps.addPart("description", new StringBody(descriptionRename));
         httpPost.setEntity(nvps);
-
+        System.out.println(httpPost.toString());
         CloseableHttpResponse response2 = httpclient.execute(httpPost);
-
         try {
             System.out.println(response2.getStatusLine());
             HttpEntity entity2 = response2.getEntity();

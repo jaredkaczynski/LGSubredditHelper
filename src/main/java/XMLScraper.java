@@ -27,7 +27,10 @@ import java.util.regex.Pattern;
 public class XMLScraper {
     RestClient restClient = new HttpRestClient();
     User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
-
+    String currentWeek;
+    public String getCurrentWeek(){
+        return(currentWeek);
+    }
     public void connectUser() {
         restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
         user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
@@ -60,7 +63,6 @@ public class XMLScraper {
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
             submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
             if (submissionsSubreddit.get(2).getTitle().contains("Photography and Homescreen")) {
-
                 return (submissionsSubreddit.get(2).getIdentifier());
             } else
                 return ("Error");
@@ -90,10 +92,47 @@ public class XMLScraper {
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
             submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
             if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
-
+                Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
+                Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
+                if (matcher.find())
+                {
+                    currentWeek = matcher.group(0);
+                    System.out.println(matcher.group(0) + "pattern");
+                }
+                System.out.println(matcher.group(0) + "pattern2");
                 return (submissionsSubreddit.get(1).getIdentifier());
-            } else
+            } else {
                 return ("Error");
+            }
+
+
+        } catch (RetrievalFailedException e) {
+            e.printStackTrace();
+        } catch (RedditError e) {
+            e.printStackTrace();
+        }
+
+        return (null);
+    }
+    public String getContestDate(String subreddit) {
+
+        try {
+            // Handle to Submissions, which offers the basic API functionality
+            Submissions subms = new Submissions(restClient, user);
+            List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
+            submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
+            if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
+                Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
+                Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
+                if (matcher.find())
+                {
+                    currentWeek = matcher.group(0);
+                }
+                return (matcher.group(0));
+            } else {
+                return ("Error");
+            }
+
 
         } catch (RetrievalFailedException e) {
             e.printStackTrace();
@@ -104,7 +143,7 @@ public class XMLScraper {
         return (null);
     }
 
-    public List<Comment> grabTopPosterInfo(String url, String timeSpan) {
+    private List<Comment> grabTopPosterInfo(String url, String timeSpan) {
         List<Comment> commentsSubmission = new ArrayList<Comment>();
         if (url.equalsIgnoreCase("empty")) {
             return (null);
@@ -114,9 +153,6 @@ public class XMLScraper {
 
             // Handle to Comments, which offers the basic API functionality
             Comments coms = new Comments(restClient, user);
-
-            // Retrieve comments of a submission
-            System.out.println("\n============== Basic submission comments ==============");
             if (timeSpan.equalsIgnoreCase("current")) {
                 commentsSubmission = coms.ofSubmission(getContestURL(url), null, 0, 0, 100, CommentSort.TOP);
             } else {
@@ -170,7 +206,7 @@ public class XMLScraper {
         return user;
     }
 
-    public ArrayList<String> imageURL(String URL, String timespan) {
+    private ArrayList<String> imageURL(String URL, String timespan) {
         ArrayList<String> imageURL = new ArrayList<String>();
         Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
                 + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
@@ -194,7 +230,7 @@ public class XMLScraper {
         return (imageURL);
     }
 
-    public ArrayList<String> usernameRetrieval(String URL, String timespan) {
+    private ArrayList<String> usernameRetrieval(String URL, String timespan) {
         ArrayList<String> usernameArrayList = new ArrayList<String>();
         XMLScraper test = new XMLScraper();
         List<Comment> topComments = test.grabTopPosterInfo(URL, timespan);
@@ -203,7 +239,7 @@ public class XMLScraper {
         return (usernameArrayList);
     }
 
-    public ArrayList<String> scoreRetrieval(String URL, String timespan) {
+    private ArrayList<String> scoreRetrieval(String URL, String timespan) {
         ArrayList<String> pointsArrayList = new ArrayList<String>();
         XMLScraper test = new XMLScraper();
         List<Comment> topComments = test.grabTopPosterInfo(URL, timespan);
@@ -223,6 +259,9 @@ public class XMLScraper {
         returnInforArray[1][1] = usernameArrayList.get(1);
         returnInforArray[0][2] = scoreArrayList.get(0);
         returnInforArray[1][2] = scoreArrayList.get(1);
+        returnInforArray[0][3] = getContestDate(URL);
+
+
         System.out.println(Arrays.deepToString(returnInforArray));
         return returnInforArray;
     }
