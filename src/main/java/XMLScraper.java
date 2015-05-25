@@ -59,9 +59,9 @@ public class XMLScraper {
 
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
             submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
-            if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
+            if (submissionsSubreddit.get(2).getTitle().contains("Photography and Homescreen")) {
 
-                return (submissionsSubreddit.get(1).getIdentifier());
+                return (submissionsSubreddit.get(2).getIdentifier());
             } else
                 return ("Error");
 
@@ -89,9 +89,9 @@ public class XMLScraper {
 
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
             submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
-            if (submissionsSubreddit.get(0).getTitle().contains("Photography and Homescreen")) {
+            if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
 
-                return (submissionsSubreddit.get(0).getIdentifier());
+                return (submissionsSubreddit.get(1).getIdentifier());
             } else
                 return ("Error");
 

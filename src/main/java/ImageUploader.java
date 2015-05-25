@@ -53,20 +53,19 @@ public class ImageUploader {
 
 // cast it to rendered image
         RenderedImage rImage = (RenderedImage) bImage;
-        ImageIO.write(bImage, "png", new File("temp.png"));
-        File tempImageFile = new File("temp.png");
+        ImageIO.write(bImage, "jpg", new File("temp.jpg"));
+        File tempImageFile = new File("temp.jpg");
         FileBody fileBody = new FileBody(tempImageFile);
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/r/"+subreddit+"/api/upload_sr_img");
         MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
-        //httpPost.setHeader("Cookie","reddit_session=" + user.getCookie());
         httpPost.addHeader("Cookie","reddit_session=" + user.getCookie());
         nvps.addPart("r", new StringBody(subreddit));
         nvps.addPart("uh", new StringBody(user.getModhash()));
         nvps.addPart("formid", new StringBody("image-upload"));
-        nvps.addPart("img_type", new StringBody("png"));
+        nvps.addPart("img_type", new StringBody("jpg"));
         nvps.addPart("name", new StringBody(imageUploadName));
         nvps.addPart("file",fileBody);
         httpPost.setEntity(nvps);
