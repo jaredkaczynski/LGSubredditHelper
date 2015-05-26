@@ -22,6 +22,9 @@ public class ImageResize {
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
         if (urlTest.endsWith(".jp"))
             urlTest = urlTest + "g";
+        if(urlTest.matches("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
+            urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
+        }
         Image image = ImageIO.read(new URL(urlTest));
 
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_DEFAULT);
@@ -30,6 +33,9 @@ public class ImageResize {
     public Image resizeHeaderImage(String urlTest) throws IOException {
         if (urlTest.endsWith(".jp"))
             urlTest = urlTest + "g";
+        if(urlTest.matches("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
+            urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
+        }
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_DEFAULT);
         if(image.getWidth(null)>2000){

@@ -30,10 +30,10 @@ import java.util.regex.Pattern;
 /**
  * Created by razrs on 5/23/2015.
  */
-public class CSSUpdater {
+public class SidebarUpdater {
     User user;
 
-    public CSSUpdater(User tempUser) {
+    public SidebarUpdater(User tempUser) {
         user = tempUser;
     }
 
@@ -82,16 +82,21 @@ public class CSSUpdater {
         nvps.addPart("suggested_comment_sort", new StringBody("none"));
         nvps.addPart("type", new StringBody("public"));
         String descriptionRename = jsonElementValue.get(5);
-        descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
-                "Homescreen of the Week\n" + "#### \\/u\\/"
+        descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+                "Homescreen of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "#### \\/u\\/"
                         + currentCommentInformation[0][1]
                         + " with "
                         + currentCommentInformation[0][2]);
+        descriptionRename = descriptionRename.replaceFirst("Photo of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+                "Photo of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "#### \\/u\\/"
+                        + currentCommentInformation[1][1]
+                        + " with "
+                        + currentCommentInformation[1][2]);
         descriptionRename = descriptionRename.replaceFirst("\\[Photo]\\([0-9A-Za-z:\\/.]*\\)\\* [^\\x00-\\x7F] \\/u\\/[A-Za-z0-9]*",
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Photo]("
                         + currentCommentInformation[1][0]
-                        + ")* • /u/"
+                        + ")* ï¿½ /u/"
                         + currentCommentInformation[1][1]);
                         //+ " \\" + "*" + "\\" +"*"
                         //+ "\\*\\*"
@@ -108,16 +113,13 @@ public class CSSUpdater {
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Homescreen]("
                         + currentCommentInformation[0][0]
-                        + ")* • /u/"
+                        + ")* ï¿½ /u/"
                         + currentCommentInformation[0][1]);
                 //+ "\\\\*\\\\*"
                 //+ currentCommentInformation[0][2]
                 //+ " points";
-        descriptionRename = descriptionRename.replaceFirst("Photo of the Week\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
-                "Photo of the Week\n" + "#### \\/u\\/"
-                        + currentCommentInformation[1][1]
-                        + " with "
-                        + currentCommentInformation[1][2]);
+        descriptionRename = descriptionRename.replaceAll("amp;","");
+
         nvps.addPart("description", new StringBody(descriptionRename));
         httpPost.setEntity(nvps);
         System.out.println(httpPost.toString());

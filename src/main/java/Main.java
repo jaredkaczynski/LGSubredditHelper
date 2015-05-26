@@ -22,15 +22,15 @@ class Main {
         String[][] currentCommentInformation = test.returnCommentInformation(subredditName, "current");
         String[][] commentInformation = test.returnCommentInformation(subredditName, "");
 
-        CSSUpdater cssUpdater = new CSSUpdater(test.getUser());
+        SidebarUpdater sidebarUpdater = new SidebarUpdater(test.getUser());
         try {
-            cssUpdater.updateSidebar(commentInformation, currentCommentInformation, subredditName, cssUpdater.getSubredditInfo(subredditName));
+            sidebarUpdater.updateSidebar(commentInformation, currentCommentInformation, subredditName, sidebarUpdater.getSubredditInfo(subredditName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        /*
         ImageResize imageResizer = new ImageResize();
         ImageUploader uploader = new ImageUploader(test.getUser());
         try {
@@ -51,7 +51,7 @@ class Main {
             File outputfile = new File("saved.jpg");
             ImageIO.write(bi, "jpg", outputfile);
         } catch (IOException e) {
-        }
+        }*/
 
 
     }

@@ -28,9 +28,11 @@ public class XMLScraper {
     RestClient restClient = new HttpRestClient();
     User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
     String currentWeek;
-    public String getCurrentWeek(){
-        return(currentWeek);
+
+    public String getCurrentWeek() {
+        return (currentWeek);
     }
+
     public void connectUser() {
         restClient.setUserAgent("User-Agent: LGG Bot (by /u/amdphenom)");
         user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
@@ -94,8 +96,7 @@ public class XMLScraper {
             if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
                 Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
                 Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
-                if (matcher.find())
-                {
+                if (matcher.find()) {
                     currentWeek = matcher.group(0);
                     System.out.println(matcher.group(0) + "pattern");
                 }
@@ -114,6 +115,7 @@ public class XMLScraper {
 
         return (null);
     }
+
     public String getContestDate(String subreddit) {
 
         try {
@@ -124,8 +126,7 @@ public class XMLScraper {
             if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
                 Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
                 Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
-                if (matcher.find())
-                {
+                if (matcher.find()) {
                     currentWeek = matcher.group(0);
                 }
                 return (matcher.group(0));
@@ -182,7 +183,7 @@ public class XMLScraper {
         }
         requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto")) {
+            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("Taken ")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
@@ -212,8 +213,7 @@ public class XMLScraper {
                 + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
                 + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)");
 
-        XMLScraper test = new XMLScraper();
-        List<Comment> topComments = test.grabTopPosterInfo(URL, timespan);
+        List<Comment> topComments = grabTopPosterInfo(URL, timespan);
         if (topComments.size() == 2) {
             Matcher m = urlPattern.matcher(topComments.get(0).getBody());
             if (m.find()) {
@@ -232,8 +232,7 @@ public class XMLScraper {
 
     private ArrayList<String> usernameRetrieval(String URL, String timespan) {
         ArrayList<String> usernameArrayList = new ArrayList<String>();
-        XMLScraper test = new XMLScraper();
-        List<Comment> topComments = test.grabTopPosterInfo(URL, timespan);
+        List<Comment> topComments = grabTopPosterInfo(URL, timespan);
         usernameArrayList.add(topComments.get(0).getAuthor());
         usernameArrayList.add(topComments.get(1).getAuthor());
         return (usernameArrayList);
@@ -241,8 +240,7 @@ public class XMLScraper {
 
     private ArrayList<String> scoreRetrieval(String URL, String timespan) {
         ArrayList<String> pointsArrayList = new ArrayList<String>();
-        XMLScraper test = new XMLScraper();
-        List<Comment> topComments = test.grabTopPosterInfo(URL, timespan);
+        List<Comment> topComments = grabTopPosterInfo(URL, timespan);
         pointsArrayList.add(topComments.get(0).getScore().toString());
         pointsArrayList.add(topComments.get(1).getScore().toString());
         return (pointsArrayList);
@@ -260,6 +258,7 @@ public class XMLScraper {
         returnInforArray[0][2] = scoreArrayList.get(0);
         returnInforArray[1][2] = scoreArrayList.get(1);
         returnInforArray[0][3] = getContestDate(URL);
+        returnInforArray[1][3] = getContestURL(URL);
 
 
         System.out.println(Arrays.deepToString(returnInforArray));
