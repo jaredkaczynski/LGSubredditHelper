@@ -30,17 +30,18 @@ class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        /*
+
         ImageResize imageResizer = new ImageResize();
         ImageUploader uploader = new ImageUploader(test.getUser());
+
         try {
-            uploader.uploadImage(imageResizer.resizeHomeScreenImage(currentCommentInformation[0][0]), "winner-screenshot", subredditName);
+            uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[0][0],"home"), "winner-screenshot", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            uploader.uploadImage(imageResizer.resizeHeaderImage(currentCommentInformation[1][0]), "headerimg", subredditName);
+            uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[1][0],"header"), "headerimg", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +52,7 @@ class Main {
             File outputfile = new File("saved.jpg");
             ImageIO.write(bi, "jpg", outputfile);
         } catch (IOException e) {
-        }*/
+        }
 
 
     }

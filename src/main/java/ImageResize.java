@@ -32,58 +32,57 @@ public class ImageResize {
         connection.getInputStream().close();
         return expandedURL;
     }
-    public void fixLink(String urlTest, String resizeOption) throws IOException {
-        urlTest = expandShortURL(urlTest);
+
+    public Image fixLink(String urlTest, String resizeOption) throws IOException {
+        if (expandShortURL(urlTest)!=null) {
+            urlTest = expandShortURL(urlTest);
+        }
         Pattern pattern = Pattern.compile("[0-9][0-9][0-9][0-9]\\\\\\/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z]_h.jpg");
 
         if (urlTest.endsWith(".jp"))
             urlTest = urlTest + "g";
-        if(urlTest.matches("(http|https):\\/\\/(www.|)drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
+        if (urlTest.matches("(http|https):\\/\\/(www.|)drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")) {
             urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
         }
-        if(urlTest.matches("(http|https):\\/\\/(www.|)www.flickr.com\\/photos\\/camerarec\\/[0-9]*")){
+        if (urlTest.matches("(http|https):\\/\\/(www.|)www.flickr.com\\/photos\\/camerarec\\/[0-9]*")) {
             Matcher matcher = pattern.matcher(urlTest);
-            if (matcher.find())
-            {
+            if (matcher.find()) {
                 urlTest = "http://farm8.staticflickr.com/" + matcher.group();
             }
 
         }
+        if (resizeOption.equals("home")) {
+            return resizeHomeScreenImage(urlTest);
+        } else {
+            return resizeHeaderImage(urlTest);
+        }
     }
 
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
-        if (urlTest.endsWith(".jp"))
-            urlTest = urlTest + "g";
-        if(urlTest.matches("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
-            urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
-        }
         Image image = ImageIO.read(new URL(urlTest));
 
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_DEFAULT);
         return scaleImage;
     }
+
     public Image resizeHeaderImage(String urlTest) throws IOException {
-        if (urlTest.endsWith(".jp"))
-            urlTest = urlTest + "g";
-        if(urlTest.matches("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
-            urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
-        }
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_DEFAULT);
-        if(image.getWidth(null)>2000){
-            scaleImage = image.getScaledInstance(1920,((1920 * image.getWidth(null))/image.getHeight(null)),Image.SCALE_FAST);
+        if (image.getWidth(null) > 2000) {
+            scaleImage = image.getScaledInstance(1920, ((1920 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_FAST);
         }
         Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
-        ImageWriter writer = (ImageWriter)iter.next();
+        ImageWriter writer = (ImageWriter) iter.next();
 // instantiate an ImageWriteParam object with default compression options
         ImageWriteParam iwp = writer.getDefaultWriteParam();
         iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         iwp.setCompressionQuality(0.8f);   // an integer between 0 and 1
 // 1 specifies minimum compression and maximum quality
-        IIOImage compressedImage = new IIOImage(imageToBufferedImage(scaleImage),null,null);
+        IIOImage compressedImage = new IIOImage(imageToBufferedImage(scaleImage), null, null);
         scaleImage = convertRenderedImage(compressedImage.getRenderedImage());
         return scaleImage;
     }
+
     public static BufferedImage imageToBufferedImage(Image im) {
         System.out.println(im.getWidth(null));
         System.out.println(im.getHeight(null));
@@ -94,9 +93,10 @@ public class ImageResize {
         bg.dispose();
         return bi;
     }
+
     public BufferedImage convertRenderedImage(RenderedImage img) {
         if (img instanceof BufferedImage) {
-            return (BufferedImage)img;
+            return (BufferedImage) img;
         }
         ColorModel cm = img.getColorModel();
         int width = img.getWidth();
@@ -105,7 +105,7 @@ public class ImageResize {
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         Hashtable properties = new Hashtable();
         String[] keys = img.getPropertyNames();
-        if (keys!=null) {
+        if (keys != null) {
             for (int i = 0; i < keys.length; i++) {
                 properties.put(keys[i], img.getProperty(keys[i]));
             }
