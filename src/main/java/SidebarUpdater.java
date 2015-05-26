@@ -45,41 +45,73 @@ public class SidebarUpdater {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/api/site_admin");
-        MultipartEntity nvps = new MultipartEntity();
+        //noinspection deprecation,deprecation
+        @SuppressWarnings("deprecation") MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
         //nvps.addPart("r", new StringBody(subreddit));
+        //noinspection deprecation
         nvps.addPart("uh", new StringBody(user.getModhash()));
+        //noinspection deprecation
         nvps.addPart("collapse_deleted_comments", new StringBody(jsonElementValue.get(19)));
+        //noinspection deprecation
         nvps.addPart("lang", new StringBody("en_US"));
+        //noinspection deprecation
         nvps.addPart("comment_score_hide_mins", new StringBody(jsonElementValue.get(17)));
+        //noinspection deprecation
         nvps.addPart("captcha", new StringBody("false"));
+        //noinspection deprecation
         nvps.addPart("iden", new StringBody("false"));
+        //noinspection deprecation
         nvps.addPart("exclude_banned_modqueue", new StringBody(jsonElementValue.get(14)));
+        //noinspection deprecation
         nvps.addPart("header-title", new StringBody(jsonElementValue.get(12)));
+        //noinspection deprecation
         nvps.addPart("hide_ads", new StringBody(jsonElementValue.get(26)));
+        //noinspection deprecation
         nvps.addPart("over_18", new StringBody(jsonElementValue.get(3)));
+        //noinspection deprecation
         nvps.addPart("public_traffic", new StringBody(jsonElementValue.get(4)));
+        //noinspection deprecation
         nvps.addPart("public_description", new StringBody(jsonElementValue.get(1)));
+        //noinspection deprecation
         nvps.addPart("show_media", new StringBody(jsonElementValue.get(15)));
+        //noinspection deprecation
         nvps.addPart("spam_comments", new StringBody(jsonElementValue.get(10)));
+        //noinspection deprecation
         nvps.addPart("spam_selfposts", new StringBody(jsonElementValue.get(11)));
+        //noinspection deprecation
         nvps.addPart("spam_links", new StringBody(jsonElementValue.get(0)));
+        //noinspection deprecation
         nvps.addPart("submit_text_label", new StringBody(jsonElementValue.get(8)));
+        //noinspection deprecation
         nvps.addPart("submit_text", new StringBody(jsonElementValue.get(2)));
+        //noinspection deprecation
         nvps.addPart("submit_link_label", new StringBody(jsonElementValue.get(23)));
+        //noinspection deprecation
         nvps.addPart("title", new StringBody(jsonElementValue.get(7)));
+        //noinspection deprecation
         nvps.addPart("wiki_edit_age", new StringBody(jsonElementValue.get(13)));
+        //noinspection deprecation
         nvps.addPart("wiki_edit_karma", new StringBody(jsonElementValue.get(22)));
         //nvps.addPart("lang", new StringBody(jsonElementValue.get(6)));
+        //noinspection deprecation
         nvps.addPart("wikimode", new StringBody(jsonElementValue.get(25)));
+        //noinspection deprecation
         nvps.addPart("api_type", new StringBody("json"));
+        //noinspection deprecation
         nvps.addPart("css_on_cname", new StringBody("true"));
+        //noinspection deprecation
         nvps.addPart("link_type", new StringBody(jsonElementValue.get(21)));
+        //noinspection deprecation
         nvps.addPart("name", new StringBody(jsonElementValue.get(7)));
+        //noinspection deprecation
         nvps.addPart("show_cname_sidebar", new StringBody("true"));
+        //noinspection deprecation
         nvps.addPart("sr", new StringBody(subreddit));
+        //noinspection deprecation
         nvps.addPart("suggested_comment_sort", new StringBody("none"));
+        //noinspection deprecation
         nvps.addPart("type", new StringBody("public"));
         String descriptionRename = jsonElementValue.get(5);
         descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
@@ -120,6 +152,7 @@ public class SidebarUpdater {
                 //+ " points";
         descriptionRename = descriptionRename.replaceAll("amp;","");
 
+        //noinspection deprecation
         nvps.addPart("description", new StringBody(descriptionRename));
         httpPost.setEntity(nvps);
         System.out.println(httpPost.toString());
@@ -136,11 +169,13 @@ public class SidebarUpdater {
     }
 
     private String getSideBar(String subreddit) throws IOException {
-        HttpClient client = new DefaultHttpClient();
+        //noinspection deprecation
+        @SuppressWarnings("deprecation") HttpClient client = new DefaultHttpClient();
         URL url = null;
         try {
             url = new URL("http://www.reddit.com/r/" + subreddit + "/about/edit.json");
             HttpGet httpGet = new HttpGet(String.valueOf(url));
+            //noinspection deprecation,deprecation
             client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, System.getProperty("User-Agent: LGG Bot (by /u/amdphenom"));
             httpGet.addHeader("Cookie", "reddit_session=" + user.getCookie());
             httpGet.addHeader("uh", user.getModhash());

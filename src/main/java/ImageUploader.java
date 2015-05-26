@@ -45,13 +45,18 @@ public class ImageUploader {
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/r/"+subreddit+"/api/upload_sr_img");
-        MultipartEntity nvps = new MultipartEntity();
+        @SuppressWarnings("deprecation") MultipartEntity nvps = new MultipartEntity();
         httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie","reddit_session=" + user.getCookie());
+        //noinspection deprecation
         nvps.addPart("r", new StringBody(subreddit));
+        //noinspection deprecation
         nvps.addPart("uh", new StringBody(user.getModhash()));
+        //noinspection deprecation
         nvps.addPart("formid", new StringBody("image-upload"));
+        //noinspection deprecation
         nvps.addPart("img_type", new StringBody("jpg"));
+        //noinspection deprecation
         nvps.addPart("name", new StringBody(imageUploadName));
         nvps.addPart("file",fileBody);
         httpPost.setEntity(nvps);

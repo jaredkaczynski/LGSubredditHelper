@@ -8,9 +8,13 @@ import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -18,6 +22,34 @@ import java.util.Iterator;
  */
 public class ImageResize {
 
+    private String expandShortURL(String address) throws IOException {
+        URL url = new URL(address);
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY); //using proxy may increase latency
+        connection.setInstanceFollowRedirects(false);
+        connection.connect();
+        String expandedURL = connection.getHeaderField("Location");
+        connection.getInputStream().close();
+        return expandedURL;
+    }
+    public void fixLink(String urlTest, String resizeOption) throws IOException {
+        urlTest = expandShortURL(urlTest);
+        Pattern pattern = Pattern.compile("[0-9][0-9][0-9][0-9]\\\\\\/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z][0-9a-z]_h.jpg");
+
+        if (urlTest.endsWith(".jp"))
+            urlTest = urlTest + "g";
+        if(urlTest.matches("(http|https):\\/\\/(www.|)drive.google.com\\/file\\/[A-z]\\/[A-z0-9]*\\/view") && urlTest.endsWith("view")){
+            urlTest = "https://drive.google.com/uc?export=download&id=" + urlTest.split("(http|https):\\/\\/drive.google.com\\/file\\/[A-z]\\/")[1].split("/view")[0];
+        }
+        if(urlTest.matches("(http|https):\\/\\/(www.|)www.flickr.com\\/photos\\/camerarec\\/[0-9]*")){
+            Matcher matcher = pattern.matcher(urlTest);
+            if (matcher.find())
+            {
+                urlTest = "http://farm8.staticflickr.com/" + matcher.group();
+            }
+
+        }
+    }
 
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
         if (urlTest.endsWith(".jp"))
