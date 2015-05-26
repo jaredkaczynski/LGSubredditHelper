@@ -47,7 +47,7 @@ public class SidebarUpdater {
         HttpPost httpPost = new HttpPost("https://www.reddit.com/api/site_admin");
         //noinspection deprecation,deprecation
         @SuppressWarnings("deprecation") MultipartEntity nvps = new MultipartEntity();
-        httpPost.setHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
+        httpPost.addHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
         //nvps.addPart("r", new StringBody(subreddit));
         //noinspection deprecation
@@ -59,9 +59,9 @@ public class SidebarUpdater {
         //noinspection deprecation
         nvps.addPart("comment_score_hide_mins", new StringBody(jsonElementValue.get(17)));
         //noinspection deprecation
-        nvps.addPart("captcha", new StringBody("false"));
+        nvps.addPart("captcha", new StringBody("captcha"));
         //noinspection deprecation
-        nvps.addPart("iden", new StringBody("false"));
+        nvps.addPart("iden", new StringBody("iden"));
         //noinspection deprecation
         nvps.addPart("exclude_banned_modqueue", new StringBody(jsonElementValue.get(14)));
         //noinspection deprecation
@@ -113,6 +113,8 @@ public class SidebarUpdater {
         nvps.addPart("suggested_comment_sort", new StringBody("none"));
         //noinspection deprecation
         nvps.addPart("type", new StringBody("public"));
+
+        nvps.addPart("allow_top",new StringBody("true"));
         String descriptionRename = jsonElementValue.get(5);
         descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* - [0-9]*",
                 "Homescreen of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "#### \\/u\\/"
@@ -130,9 +132,9 @@ public class SidebarUpdater {
                         + currentCommentInformation[1][0]
                         + ")* • /u/"
                         + currentCommentInformation[1][1]
-                //+ " \\" + "*" + "\\" +"*"
-                + " with "
-                + currentCommentInformation[1][2]);
+                        //+ " \\" + "*" + "\\" +"*"
+                        + " with "
+                        + currentCommentInformation[1][2]);
         //+ " points";
         descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
                 commentInformation[0][3]).replace(",", "");
@@ -147,8 +149,8 @@ public class SidebarUpdater {
                         + currentCommentInformation[0][0]
                         + ")* • /u/"
                         + currentCommentInformation[0][1]
-                + " with "
-                + currentCommentInformation[0][2]);
+                        + " with "
+                        + currentCommentInformation[0][2]);
         //+ " points";
         descriptionRename = descriptionRename.replaceAll("amp;", "");
 

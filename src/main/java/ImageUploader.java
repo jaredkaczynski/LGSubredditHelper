@@ -46,7 +46,7 @@ public class ImageUploader {
 
         HttpPost httpPost = new HttpPost("https://www.reddit.com/r/"+subreddit+"/api/upload_sr_img");
         @SuppressWarnings("deprecation") MultipartEntity nvps = new MultipartEntity();
-        httpPost.setHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
+        httpPost.addHeader("User-Agent","User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie","reddit_session=" + user.getCookie());
         //noinspection deprecation
         nvps.addPart("r", new StringBody(subreddit));
