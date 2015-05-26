@@ -21,7 +21,14 @@ import java.util.regex.Pattern;
  * Created by razrs on 5/23/2015.
  */
 public class ImageResize {
-
+    /**
+     *
+     * @param address
+     * @return
+     * @throws IOException
+     * This expands shortened URLs if needed
+     *
+     */
     private String expandShortURL(String address) throws IOException {
         URL url = new URL(address);
 
@@ -33,6 +40,16 @@ public class ImageResize {
         return expandedURL;
     }
 
+    /**
+     *
+     * @param urlTest
+     * @param resizeOption
+     * @return
+     * @throws IOException
+     * This validates and fixes links such as non direct links
+     * using google drive or flickr
+     * As well as shortened versions of them
+     */
     public Image fixLink(String urlTest, String resizeOption) throws IOException {
         if (expandShortURL(urlTest)!=null) {
             urlTest = expandShortURL(urlTest);

@@ -114,43 +114,43 @@ public class SidebarUpdater {
         //noinspection deprecation
         nvps.addPart("type", new StringBody("public"));
         String descriptionRename = jsonElementValue.get(5);
-        descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+        descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* - [0-9]*",
                 "Homescreen of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "#### \\/u\\/"
                         + currentCommentInformation[0][1]
-                        + " with "
+                        + " - "
                         + currentCommentInformation[0][2]);
-        descriptionRename = descriptionRename.replaceFirst("Photo of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* with [0-9]*",
+        descriptionRename = descriptionRename.replaceFirst("Photo of the Week]\\([A-z0-9:\\/.]*\\)\\n#### \\/u\\/[a-zA-Z1-9]* - [0-9]*",
                 "Photo of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "#### \\/u\\/"
                         + currentCommentInformation[1][1]
-                        + " with "
+                        + " - "
                         + currentCommentInformation[1][2]);
-        descriptionRename = descriptionRename.replaceFirst("\\[Photo]\\([0-9A-Za-z:\\/.]*\\)\\* [^\\x00-\\x7F] \\/u\\/[A-Za-z0-9]*",
+        descriptionRename = descriptionRename.replaceFirst("\\[Photo]\\([0-9A-Za-z:\\/.]*\\)\\* ([^\\x00-\\x7F]|-) \\/u\\/[A-Za-z0-9]* with [0-9]*",
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Photo]("
                         + currentCommentInformation[1][0]
-                        + ")* � /u/"
-                        + currentCommentInformation[1][1]);
-                        //+ " \\" + "*" + "\\" +"*"
-                        //+ "\\*\\*"
-                        //+ currentCommentInformation[1][2]
-                        //+ " points";
+                        + ")* • /u/"
+                        + currentCommentInformation[1][1]
+                //+ " \\" + "*" + "\\" +"*"
+                + " with "
+                + currentCommentInformation[1][2]);
+        //+ " points";
         descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
-                commentInformation[0][3]).replace(",","");
+                commentInformation[0][3]).replace(",", "");
 
         descriptionRename = descriptionRename.replaceAll("[0-9]* [A-z]* [0-9][0-9][0-9][0-9]",
-                          commentInformation[0][3].replace(",","").replaceAll(" [A-Za-z]* ", "").replaceAll("[0-9][0-9][0-9][0-9]", "")
-                        + commentInformation[0][3].replace(",","").replaceAll("[A-z]* [0-9]* ",""));
+                commentInformation[0][3].replace(",", "").replaceAll(" [A-Za-z]* ", "").replaceAll("[0-9][0-9][0-9][0-9]", "")
+                        + commentInformation[0][3].replace(",", "").replaceAll("[A-z]* [0-9]* ", ""));
 
-        descriptionRename = descriptionRename.replaceFirst("\\[Homescreen]\\([0-9A-Za-z:\\/.]*\\)\\* [^\\x00-\\x7F] \\/u\\/[A-Za-z0-9]*",
+        descriptionRename = descriptionRename.replaceFirst("\\[Homescreen]\\([0-9A-Za-z:\\/.]*\\)\\* ([^\\x00-\\x7F]|-) \\/u\\/[A-Za-z0-9]* with [0-9]*",
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Homescreen]("
                         + currentCommentInformation[0][0]
-                        + ")* � /u/"
-                        + currentCommentInformation[0][1]);
-                //+ "\\\\*\\\\*"
-                //+ currentCommentInformation[0][2]
-                //+ " points";
-        descriptionRename = descriptionRename.replaceAll("amp;","");
+                        + ")* • /u/"
+                        + currentCommentInformation[0][1]
+                + " with "
+                + currentCommentInformation[0][2]);
+        //+ " points";
+        descriptionRename = descriptionRename.replaceAll("amp;", "");
 
         //noinspection deprecation
         nvps.addPart("description", new StringBody(descriptionRename));

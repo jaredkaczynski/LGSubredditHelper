@@ -183,7 +183,7 @@ public class XMLScraper {
         }
         requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("Taken ")) {
+            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
