@@ -130,7 +130,7 @@ public class SidebarUpdater {
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Photo]("
                         + currentCommentInformation[1][0]
-                        + ")* * /u/"
+                        + ")* - /u/"
                         + currentCommentInformation[1][1]
                         //+ " \\" + "*" + "\\" +"*"
                         + " with "
@@ -147,7 +147,7 @@ public class SidebarUpdater {
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Homescreen]("
                         + currentCommentInformation[0][0]
-                        + ")* * /u/"
+                        + ")* - /u/"
                         + currentCommentInformation[0][1]
                         + " with "
                         + currentCommentInformation[0][2]);
