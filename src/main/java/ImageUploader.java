@@ -16,6 +16,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
+
 /**
  * Created by razrs on 5/23/2015.
  */
@@ -38,6 +39,7 @@ public class ImageUploader {
         bImageGraphics.drawImage(imageType, null, null);
 
 // cast it to rendered image
+
         RenderedImage rImage = bImage;
         ImageIO.write(bImage, "jpg", new File("temp.jpg"));
         File tempImageFile = new File("temp.jpg");

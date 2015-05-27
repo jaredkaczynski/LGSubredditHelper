@@ -108,11 +108,11 @@ public class SidebarUpdater {
         //noinspection deprecation
         nvps.addPart("show_cname_sidebar", new StringBody("true"));
         //noinspection deprecation
-        nvps.addPart("sr", new StringBody(subreddit));
+        nvps.addPart("sr", new StringBody(jsonElementValue.get(9)));
         //noinspection deprecation
         nvps.addPart("suggested_comment_sort", new StringBody("none"));
         //noinspection deprecation
-        nvps.addPart("type", new StringBody("public"));
+        nvps.addPart("type", new StringBody(jsonElementValue.get(18)));
 
         nvps.addPart("allow_top",new StringBody("true"));
         String descriptionRename = jsonElementValue.get(5);
@@ -130,7 +130,7 @@ public class SidebarUpdater {
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Photo]("
                         + currentCommentInformation[1][0]
-                        + ")* • /u/"
+                        + ")* * /u/"
                         + currentCommentInformation[1][1]
                         //+ " \\" + "*" + "\\" +"*"
                         + " with "
@@ -147,7 +147,7 @@ public class SidebarUpdater {
                 // [^\x00-\x7F] \/u\/[A-Za-z0-9]* \*\*[0-9]* points
                 "[Homescreen]("
                         + currentCommentInformation[0][0]
-                        + ")* • /u/"
+                        + ")* * /u/"
                         + currentCommentInformation[0][1]
                         + " with "
                         + currentCommentInformation[0][2]);
