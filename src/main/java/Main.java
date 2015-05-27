@@ -11,8 +11,11 @@ import java.io.IOException;
  */
 class Main {
     public static void main(String[] args) {
-        //String url = args[0];
-        performUpdate("lgg2");
+        if(args.length > 0) {
+            performUpdate(args[0]);
+        } else {
+            performUpdate("lgg2");
+        }
     }
 
     static void performUpdate(String subredditName) {
