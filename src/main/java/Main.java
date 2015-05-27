@@ -11,8 +11,8 @@ import java.io.IOException;
  */
 class Main {
     public static void main(String[] args) {
-        //String url = args[0];
-        performUpdate("lgg2");
+        performUpdate(args[0]);
+        //performUpdate("lgg2");
     }
 
     static void performUpdate(String subredditName) {
@@ -53,7 +53,8 @@ class Main {
             ImageIO.write(bi, "jpg", outputfile);
         } catch (IOException e) {
         }
-
+        UpdateWiki wikiUpdater = new UpdateWiki(test.getUser());
+       //wikiUpdater.editWikiPage(currentCommentInformation,subredditName);
 
     }
 

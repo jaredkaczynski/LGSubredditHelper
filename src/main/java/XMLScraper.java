@@ -169,7 +169,7 @@ public class XMLScraper {
             e.printStackTrace();
         }
         /**
-         * Here is where I grab the top homescreen related comment
+         * Here is where I grab the top related comment
          */
         List<Comment> returnedComments = new ArrayList<Comment>();
         int requiredsize = 2;
@@ -181,7 +181,7 @@ public class XMLScraper {
                 break;
             }
         }
-        requiredsize = requiredsize - returnedComments.size();
+        //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
             if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
