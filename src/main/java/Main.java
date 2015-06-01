@@ -20,21 +20,22 @@ class Main {
 
     static void performUpdate(String subredditName) {
         XMLScraper test = new XMLScraper();
+        ImageResize imageResizer = new ImageResize();
         test.connectUser();
 
         String[][] currentCommentInformation = test.returnCommentInformation(subredditName, "current");
-        String[][] commentInformation = test.returnCommentInformation(subredditName, "");
+        //String[][] commentInformation = test.returnCommentInformation(subredditName, "");
 
         SidebarUpdater sidebarUpdater = new SidebarUpdater(test.getUser());
         try {
-            sidebarUpdater.updateSidebar(commentInformation, currentCommentInformation, subredditName, sidebarUpdater.getSubredditInfo(subredditName));
+            sidebarUpdater.updateSidebar(currentCommentInformation, currentCommentInformation, subredditName, sidebarUpdater.getSubredditInfo(subredditName));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        ImageResize imageResizer = new ImageResize();
+
         ImageUploader uploader = new ImageUploader(test.getUser());
 
         try {
@@ -48,17 +49,22 @@ class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        /*
         try {
             // retrieve image
             BufferedImage bi = imageToBufferedImage(imageResizer.resizeHomeScreenImage(commentInformation[0][0]));
             File outputfile = new File("saved.jpg");
             ImageIO.write(bi, "jpg", outputfile);
         } catch (IOException e) {
-        }
-        UpdateWiki wikiUpdater = new UpdateWiki(test.getUser());
+        }*/
+        /*UpdateWiki wikiUpdater = new UpdateWiki(test.getUser());
        //wikiUpdater.editWikiPage(currentCommentInformation,subredditName);
-
+        SmartCropRequest newSmartCrop = new SmartCropRequest(test.getUser());
+        try {
+            newSmartCrop.smartCropImage(imageResizer.fixLink(currentCommentInformation[0][0],"header"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public static BufferedImage imageToBufferedImage(Image im) {

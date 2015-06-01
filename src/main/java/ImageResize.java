@@ -68,6 +68,12 @@ public class ImageResize {
             }
 
         }
+        if(urlTest.matches("(http|https):\\/\\/(www.|)imgur.com\\/[A-Z0-9][A-z0-9]*(\\/|)")){
+            if(urlTest.endsWith("/")){
+                urlTest.substring(0,urlTest.length()-1);
+            }
+            urlTest = "http://i." + urlTest.substring(7,urlTest.length()) + ".jpg";
+        }
         if (resizeOption.equals("home")) {
             return resizeHomeScreenImage(urlTest);
         } else {
@@ -78,7 +84,7 @@ public class ImageResize {
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
         Image image = ImageIO.read(new URL(urlTest));
 
-        Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_DEFAULT);
+        Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_SMOOTH);
         return scaleImage;
     }
 
@@ -86,7 +92,7 @@ public class ImageResize {
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_DEFAULT);
         if (image.getWidth(null) > 2000) {
-            scaleImage = image.getScaledInstance(1920, ((1920 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_FAST);
+            scaleImage = image.getScaledInstance(1920, ((1920 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_SMOOTH);
         }
         Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
         ImageWriter writer = (ImageWriter) iter.next();

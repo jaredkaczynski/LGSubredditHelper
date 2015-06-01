@@ -175,7 +175,7 @@ public class XMLScraper {
         int requiredsize = 2;
         assert commentsSubmission != null;
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("omescreen")) {
+            if (aCommentsSubmission.getBody().contains("omescreen") || aCommentsSubmission.getBody().contains("ome")) {
                 System.out.println(aCommentsSubmission);
                 returnedComments.add(aCommentsSubmission);
                 break;
@@ -183,7 +183,7 @@ public class XMLScraper {
         }
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
+            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("exposure")|| aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
@@ -209,11 +209,10 @@ public class XMLScraper {
 
     private ArrayList<String> imageURL(String URL, String timespan) {
         ArrayList<String> imageURL = new ArrayList<String>();
-        Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
-                + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
-                + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)");
+        Pattern urlPattern = Pattern.compile("((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?)");
 
         List<Comment> topComments = grabTopPosterInfo(URL, timespan);
+        //Should always be 2 with first being homescreen and 2nd being the photo
         if (topComments.size() == 2) {
             Matcher m = urlPattern.matcher(topComments.get(0).getBody());
             if (m.find()) {
@@ -251,8 +250,8 @@ public class XMLScraper {
         ArrayList<String> imageURLArrayList = imageURL(URL, timespan);
         ArrayList<String> usernameArrayList = usernameRetrieval(URL, timespan);
         ArrayList<String> scoreArrayList = scoreRetrieval(URL, timespan);
-        returnInforArray[0][0] = imageURLArrayList.get(0).substring(1, imageURLArrayList.get(0).length() - 1);
-        returnInforArray[1][0] = imageURLArrayList.get(1).substring(1, imageURLArrayList.get(1).length() - 1);
+        returnInforArray[0][0] = imageURLArrayList.get(0).substring(0, imageURLArrayList.get(0).length());
+        returnInforArray[1][0] = imageURLArrayList.get(1).substring(0, imageURLArrayList.get(1).length());
         returnInforArray[0][1] = usernameArrayList.get(0);
         returnInforArray[1][1] = usernameArrayList.get(1);
         returnInforArray[0][2] = scoreArrayList.get(0);
