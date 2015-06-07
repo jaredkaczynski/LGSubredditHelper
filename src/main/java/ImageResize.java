@@ -90,7 +90,7 @@ public class ImageResize {
 
     public Image resizeHeaderImage(String urlTest) throws IOException {
         Image image = ImageIO.read(new URL(urlTest));
-        Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_DEFAULT);
+        Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_SMOOTH);
         if (image.getWidth(null) > 2000) {
             scaleImage = image.getScaledInstance(1920, ((1920 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_SMOOTH);
         }
@@ -99,7 +99,7 @@ public class ImageResize {
 // instantiate an ImageWriteParam object with default compression options
         ImageWriteParam iwp = writer.getDefaultWriteParam();
         iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        iwp.setCompressionQuality(0.8f);   // an integer between 0 and 1
+        iwp.setCompressionQuality(0.6f);   // an integer between 0 and 1
 // 1 specifies minimum compression and maximum quality
         IIOImage compressedImage = new IIOImage(imageToBufferedImage(scaleImage), null, null);
         scaleImage = convertRenderedImage(compressedImage.getRenderedImage());

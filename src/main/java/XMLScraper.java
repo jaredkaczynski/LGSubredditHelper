@@ -91,8 +91,8 @@ public class XMLScraper {
             // Handle to Submissions, which offers the basic API functionality
             Submissions subms = new Submissions(restClient, user);
 
-            List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
-            submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
+            List<Submission> submissionsSubreddit;
+            submissionsSubreddit = subms.search("subreddit:" + subreddit + " title:Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
             if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
                 Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
                 Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
@@ -122,7 +122,7 @@ public class XMLScraper {
             // Handle to Submissions, which offers the basic API functionality
             Submissions subms = new Submissions(restClient, user);
             List<Submission> submissionsSubreddit = subms.ofSubreddit(subreddit, SubmissionSort.HOT, 1, 10, null, null, false);
-            submissionsSubreddit = subms.search("subreddit:" + subreddit + " Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
+            submissionsSubreddit = subms.search("subreddit:" + subreddit + " title:Photography and Homescreen", null, SearchSort.NEW, TimeSpan.MONTH, -1, 100, null, null, true);
             if (submissionsSubreddit.get(1).getTitle().contains("Photography and Homescreen")) {
                 Pattern pattern = Pattern.compile("[A-z]* [0-9]*. [0-9][0-9][0-9][0-9]");
                 Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
@@ -149,9 +149,7 @@ public class XMLScraper {
         if (url.equalsIgnoreCase("empty")) {
             return (null);
         }
-
         try {
-
             // Handle to Comments, which offers the basic API functionality
             Comments coms = new Comments(restClient, user);
             if (timeSpan.equalsIgnoreCase("current")) {
@@ -159,10 +157,10 @@ public class XMLScraper {
             } else {
                 commentsSubmission = coms.ofSubmission(getLastWeekContestURL(url), null, 0, 0, 100, CommentSort.TOP);
             }
-            Comments.printCommentTree(commentsSubmission);
+            //Comments.printCommentTree(commentsSubmission);
             //Collections.reverse(commentsSubmission);
-            System.out.println(commentsSubmission);
-            System.out.println(commentsSubmission.get(1).getScore());
+            //System.out.println(commentsSubmission);
+            //System.out.println(commentsSubmission.get(1).getScore());
         } catch (RetrievalFailedException e) {
             e.printStackTrace();
         } catch (RedditError e) {
@@ -175,7 +173,7 @@ public class XMLScraper {
         int requiredsize = 2;
         assert commentsSubmission != null;
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("omescreen") || aCommentsSubmission.getBody().contains("ome")) {
+            if (aCommentsSubmission.getBody().contains("ome screen") || aCommentsSubmission.getBody().contains("5g4b3543lj")) {
                 System.out.println(aCommentsSubmission);
                 returnedComments.add(aCommentsSubmission);
                 break;
@@ -183,7 +181,7 @@ public class XMLScraper {
         }
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("exposure")|| aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
+            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("entral")|| aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
@@ -199,7 +197,7 @@ public class XMLScraper {
                 }
             }
         }*/
-        System.out.println(returnedComments);
+        System.out.println(returnedComments.get(0).getBody());
         return (returnedComments);
     }
 
@@ -223,7 +221,7 @@ public class XMLScraper {
         }
         Matcher m = urlPattern.matcher(topComments.get(1).getBody());
         if (m.find()) {
-            System.out.println(m.group());
+            //System.out.println(m.group());
             imageURL.add(m.group());
         }
         return (imageURL);

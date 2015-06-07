@@ -136,6 +136,7 @@ public class SidebarUpdater {
                         + " with "
                         + currentCommentInformation[1][2]);
         //+ " points";
+        //replaces the date in Month 00 0000 format
         descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
                 commentInformation[0][3]).replace(",", "");
 
@@ -153,6 +154,10 @@ public class SidebarUpdater {
                         + currentCommentInformation[0][2]);
         //+ " points";
         descriptionRename = descriptionRename.replaceAll("amp;", "");
+        //fallback for when randomly Error appears
+
+        descriptionRename = descriptionRename.replaceAll("Error",
+                commentInformation[0][3]).replace(",", "");
 
         //noinspection deprecation
         nvps.addPart("description", new StringBody(descriptionRename));

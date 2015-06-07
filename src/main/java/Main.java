@@ -12,12 +12,15 @@ import java.io.IOException;
 class Main {
     public static void main(String[] args) {
         if(args.length > 0) {
+            System.out.println(args[0]);
             performUpdate(args[0]);
+
         } else {
+            System.out.println("lgg2");
             performUpdate("lgg2");
+
         }
     }
-
     static void performUpdate(String subredditName) {
         XMLScraper test = new XMLScraper();
         ImageResize imageResizer = new ImageResize();
