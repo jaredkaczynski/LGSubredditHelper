@@ -47,7 +47,7 @@ class Main {
             e.printStackTrace();
         }
 
-        try {
+        /*try {
             uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[1][0],"header"), "headerimg", subredditName);
         } catch (IOException e) {
             e.printStackTrace();

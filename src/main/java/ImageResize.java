@@ -68,7 +68,7 @@ public class ImageResize {
             }
 
         }
-        if(urlTest.matches("(http|https):\\/\\/(www.|)imgur.com\\/[A-Z0-9][A-z0-9]*(\\/|)")){
+        if(urlTest.matches("(http|https):\\/\\/(www.|)imgur\\.com\\/[A-z0-9]*(\\/|)")){
             if(urlTest.endsWith("/")){
                 urlTest.substring(0,urlTest.length()-1);
             }

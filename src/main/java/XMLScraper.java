@@ -6,8 +6,7 @@ import com.github.jreddit.exception.RetrievalFailedException;
 import com.github.jreddit.retrieval.Comments;
 import com.github.jreddit.retrieval.Submissions;
 import com.github.jreddit.retrieval.params.*;
-import com.github.jreddit.utils.restclient.HttpRestClient;
-import com.github.jreddit.utils.restclient.RestClient;
+import com.github.jreddit.utils.restclient.PoliteHttpRestClient;
 import examples.Authentication;
 import org.json.simple.parser.ParseException;
 
@@ -25,7 +24,7 @@ import java.util.regex.Pattern;
  * and whether it is time to update the images or not
  */
 public class XMLScraper {
-    RestClient restClient = new HttpRestClient();
+    PoliteHttpRestClient restClient = new PoliteHttpRestClient();
     User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
     String currentWeek;
 
@@ -172,16 +171,18 @@ public class XMLScraper {
         List<Comment> returnedComments = new ArrayList<Comment>();
         int requiredsize = 2;
         assert commentsSubmission != null;
+        //Grab homescreen
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("ome screen") || aCommentsSubmission.getBody().contains("5g4b3543lj")) {
+            if (aCommentsSubmission.getBody().contains("omescreen")) {
                 System.out.println(aCommentsSubmission);
                 returnedComments.add(aCommentsSubmission);
                 break;
             }
         }
+        //grab photo
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto") || aCommentsSubmission.getBody().contains("entral")|| aCommentsSubmission.getBody().contains("pic") || aCommentsSubmission.getBody().contains("aken")) {
+            if (aCommentsSubmission.getBody().contains("hoto")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
