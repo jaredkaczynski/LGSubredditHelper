@@ -28,7 +28,7 @@ public class ImageUploader {
     }
 
     public void uploadImage(Image imageType, String imageUploadName, String subreddit) throws IOException {
-        System.out.println(user.getCookie());
+        //System.out.println(user.getCookie());
         // construct the buffered image
         BufferedImage bImage = new BufferedImage(imageType.getWidth(null), imageType.getHeight(null), BufferedImage.TYPE_INT_RGB);
 

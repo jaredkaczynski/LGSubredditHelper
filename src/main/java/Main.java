@@ -40,7 +40,7 @@ class Main {
 
 
         ImageUploader uploader = new ImageUploader(test.getUser());
-        /*
+
         try {
             uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[0][0],"home"), "winner-screenshot", subredditName);
         } catch (IOException e) {
@@ -48,7 +48,7 @@ class Main {
             System.err.println("Homescreen upload fail");
 
         }
-        */
+
         try {
             uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[1][0],"header"), "headerimg", subredditName);
         } catch (IOException e) {

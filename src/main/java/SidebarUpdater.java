@@ -123,6 +123,7 @@ public class SidebarUpdater {
                         + currentCommentInformation[0][1]
                         + " - "
                         + currentCommentInformation[0][2]);*/
+        /*
         descriptionRename = descriptionRename.replaceFirst("Homescreen of the Week]\\([A-z0-9:\\/.]*\\)\\n####by \\/u\\/[a-zA-Z0-9_]* - [0-9]*",
                 "Homescreen of the Week](http://reddit.com/r/" + subreddit + "/" + currentCommentInformation[1][3] + ")\n" + "####by \\/u\\/"
                         + currentCommentInformation[0][1]

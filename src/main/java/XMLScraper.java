@@ -169,11 +169,11 @@ public class XMLScraper {
          * Here is where I grab the top related comment
          */
         List<Comment> returnedComments = new ArrayList<Comment>();
-        int requiredsize = 1;
+        int requiredsize = 2;
         assert commentsSubmission != null;
         //Grab homescreen
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("homescreen")) {
+            if (aCommentsSubmission.getBody().contains("Picture")) {
                 System.out.println(aCommentsSubmission);
                 returnedComments.add(aCommentsSubmission);
                 break;
@@ -182,7 +182,7 @@ public class XMLScraper {
         //grab photo
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("Picture")) {
+            if (aCommentsSubmission.getBody().contains("pics")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
