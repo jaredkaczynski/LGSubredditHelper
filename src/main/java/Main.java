@@ -27,7 +27,7 @@ class Main {
         test.connectUser();
 
         String[][] currentCommentInformation = test.returnCommentInformation(subredditName, "current");
-        //String[][] commentInformation = test.returnCommentInformation(subredditName, "");
+        String[][] commentInformation = test.returnCommentInformation(subredditName, "current");
 
         SidebarUpdater sidebarUpdater = new SidebarUpdater(test.getUser());
         try {
@@ -40,17 +40,20 @@ class Main {
 
 
         ImageUploader uploader = new ImageUploader(test.getUser());
-
+        /*
         try {
             uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[0][0],"home"), "winner-screenshot", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+            System.err.println("Homescreen upload fail");
 
-        /*try {
+        }
+        */
+        try {
             uploader.uploadImage(imageResizer.fixLink(currentCommentInformation[1][0],"header"), "headerimg", subredditName);
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Image upload fail");
         }
         /*
         try {

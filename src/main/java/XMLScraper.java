@@ -97,9 +97,9 @@ public class XMLScraper {
                 Matcher matcher = pattern.matcher(submissionsSubreddit.get(1).getTitle());
                 if (matcher.find()) {
                     currentWeek = matcher.group(0);
-                    System.out.println(matcher.group(0) + "pattern");
+                    //System.out.println(matcher.group(0) + "pattern");
                 }
-                System.out.println(matcher.group(0) + "pattern2");
+                //System.out.println(matcher.group(0) + "pattern2");
                 return (submissionsSubreddit.get(1).getIdentifier());
             } else {
                 return ("Error");
@@ -169,11 +169,11 @@ public class XMLScraper {
          * Here is where I grab the top related comment
          */
         List<Comment> returnedComments = new ArrayList<Comment>();
-        int requiredsize = 2;
+        int requiredsize = 1;
         assert commentsSubmission != null;
         //Grab homescreen
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("omescreen")) {
+            if (aCommentsSubmission.getBody().contains("homescreen")) {
                 System.out.println(aCommentsSubmission);
                 returnedComments.add(aCommentsSubmission);
                 break;
@@ -182,7 +182,7 @@ public class XMLScraper {
         //grab photo
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("hoto")) {
+            if (aCommentsSubmission.getBody().contains("Picture")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
@@ -198,7 +198,7 @@ public class XMLScraper {
                 }
             }
         }*/
-        System.out.println(returnedComments.get(0).getBody());
+        //System.out.println(returnedComments.get(0).getBody());
         return (returnedComments);
     }
 
@@ -259,7 +259,7 @@ public class XMLScraper {
         returnInforArray[1][3] = getContestURL(URL);
 
 
-        System.out.println(Arrays.deepToString(returnInforArray));
+        //System.out.println(Arrays.deepToString(returnInforArray));
         return returnInforArray;
     }
 }
