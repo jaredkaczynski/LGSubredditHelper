@@ -62,7 +62,7 @@ class Main {
             File outputfile = new File("saved.jpg");
             ImageIO.write(bi, "jpg", outputfile);
         } catch (IOException e) {
-        }*/
+        }
         /*UpdateWiki wikiUpdater = new UpdateWiki(test.getUser());
        //wikiUpdater.editWikiPage(currentCommentInformation,subredditName);
         SmartCropRequest newSmartCrop = new SmartCropRequest(test.getUser());

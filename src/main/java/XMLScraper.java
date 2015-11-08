@@ -27,6 +27,8 @@ public class XMLScraper {
     PoliteHttpRestClient restClient = new PoliteHttpRestClient();
     User user = new User(restClient, Authentication.getUsername(), Authentication.getPassword());
     String currentWeek;
+    //I did bad but don't feel like fixing it properly
+    List<Comment> returnedCommentsSaved = new ArrayList<Comment>();
 
     public String getCurrentWeek() {
         return (currentWeek);
@@ -144,6 +146,9 @@ public class XMLScraper {
     }
 
     private List<Comment> grabTopPosterInfo(String url, String timeSpan) {
+        if(returnedCommentsSaved.size()>0){
+            return(returnedCommentsSaved);
+        }
         List<Comment> commentsSubmission = new ArrayList<Comment>();
         if (url.equalsIgnoreCase("empty")) {
             return (null);
@@ -173,8 +178,8 @@ public class XMLScraper {
         assert commentsSubmission != null;
         //Grab homescreen
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("Picture")) {
-                System.out.println(aCommentsSubmission);
+            if (aCommentsSubmission.getBody().contains("elun")) {
+                System.out.println(aCommentsSubmission + " comment for HS");
                 returnedComments.add(aCommentsSubmission);
                 break;
             }
@@ -182,8 +187,9 @@ public class XMLScraper {
         //grab photo
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("pics")) {
+            if (aCommentsSubmission.getBody().contains("Mist")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
+                    System.out.println(aCommentsSubmission + " comment for P");
                     returnedComments.add(aCommentsSubmission);
                     //requiredsize--;
                     break;
@@ -199,6 +205,7 @@ public class XMLScraper {
             }
         }*/
         //System.out.println(returnedComments.get(0).getBody());
+        returnedCommentsSaved = returnedComments;
         return (returnedComments);
     }
 
@@ -222,7 +229,7 @@ public class XMLScraper {
         }
         Matcher m = urlPattern.matcher(topComments.get(1).getBody());
         if (m.find()) {
-            //System.out.println(m.group());
+            System.out.println(m.group());
             imageURL.add(m.group());
         }
         return (imageURL);

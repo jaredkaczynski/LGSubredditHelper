@@ -83,7 +83,7 @@ public class ImageResize {
 
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
         Image image = ImageIO.read(new URL(urlTest));
-
+        System.out.println(urlTest);
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_SMOOTH);
         return scaleImage;
     }
@@ -92,7 +92,7 @@ public class ImageResize {
         Image image = ImageIO.read(new URL(urlTest));
         Image scaleImage = image.getScaledInstance(image.getWidth(null), image.getHeight(null), Image.SCALE_SMOOTH);
         if (image.getWidth(null) > 2000) {
-            scaleImage = image.getScaledInstance(1920, ((1920 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_SMOOTH);
+            scaleImage = image.getScaledInstance(1220, ((1220 * image.getWidth(null)) / image.getHeight(null)), Image.SCALE_SMOOTH);
         }
         Iterator iter = ImageIO.getImageWritersByFormatName("jpg");
         ImageWriter writer = (ImageWriter) iter.next();
