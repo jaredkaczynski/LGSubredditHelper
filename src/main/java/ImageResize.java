@@ -68,6 +68,15 @@ public class ImageResize {
             }
 
         }
+
+        if (urlTest.matches("(http|https):\\/\\/(www.|)imgur.com\\/gallery\\/[A-z0-9]*")) {
+            Matcher matcher = pattern.matcher(urlTest);
+            if(urlTest.endsWith("/")){
+                urlTest = urlTest.substring(urlTest.length()-8,urlTest.length()-1);
+            }
+            urlTest = "http://i.imgur.com/" + urlTest.substring(urlTest.length()-7,urlTest.length()) + ".jpg";
+
+        }
         if(urlTest.matches("(http|https):\\/\\/(www.|)imgur\\.com\\/[A-z0-9]*(\\/|)")){
             if(urlTest.endsWith("/")){
                 urlTest.substring(0,urlTest.length()-1);
@@ -82,6 +91,7 @@ public class ImageResize {
     }
 
     public Image resizeHomeScreenImage(String urlTest) throws IOException {
+
         Image image = ImageIO.read(new URL(urlTest));
         System.out.println(urlTest);
         Image scaleImage = image.getScaledInstance(116, 204, Image.SCALE_SMOOTH);

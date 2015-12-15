@@ -51,69 +51,70 @@ public class SidebarUpdater {
         httpPost.addHeader("User-Agent", "User-Agent: LGG Bot (by /u/amdphenom");
         httpPost.addHeader("Cookie", "reddit_session=" + user.getCookie());
         //nvps.addPart("r", new StringBody(subreddit));
+        int shift = -1;
         //noinspection deprecation
         nvps.addPart("uh", new StringBody(user.getModhash()));
         //noinspection deprecation
-        nvps.addPart("collapse_deleted_comments", new StringBody(jsonElementValue.get(20)));
+        nvps.addPart("collapse_deleted_comments", new StringBody(jsonElementValue.get(shift+20)));
         //noinspection deprecation
         nvps.addPart("lang", new StringBody("en_US"));
         //noinspection deprecation
-        nvps.addPart("comment_score_hide_mins", new StringBody(jsonElementValue.get(18)));
+        nvps.addPart("comment_score_hide_mins", new StringBody(jsonElementValue.get(shift+18)));
         //noinspection deprecation
         nvps.addPart("captcha", new StringBody("captcha"));
         //noinspection deprecation
         nvps.addPart("iden", new StringBody("iden"));
         //noinspection deprecation
-        nvps.addPart("exclude_banned_modqueue", new StringBody(jsonElementValue.get(15)));
+        nvps.addPart("exclude_banned_modqueue", new StringBody(jsonElementValue.get(shift+15)));
         //noinspection deprecation
-        nvps.addPart("header-title", new StringBody(jsonElementValue.get(13)));
+        nvps.addPart("header-title", new StringBody(jsonElementValue.get(shift+13)));
         //noinspection deprecation
-        nvps.addPart("hide_ads", new StringBody(jsonElementValue.get(27)));
+        nvps.addPart("hide_ads", new StringBody(jsonElementValue.get(shift+27)));
         //noinspection deprecation
-        nvps.addPart("over_18", new StringBody(jsonElementValue.get(4)));
+        nvps.addPart("over_18", new StringBody(jsonElementValue.get(shift+4)));
         //noinspection deprecation
-        nvps.addPart("public_traffic", new StringBody(jsonElementValue.get(5)));
+        nvps.addPart("public_traffic", new StringBody(jsonElementValue.get(shift+5)));
         //noinspection deprecation
-        nvps.addPart("public_description", new StringBody(jsonElementValue.get(2)));
+        nvps.addPart("public_description", new StringBody(jsonElementValue.get(shift+2)));
         //noinspection deprecation
-        nvps.addPart("show_media", new StringBody(jsonElementValue.get(16)));
+        nvps.addPart("show_media", new StringBody(jsonElementValue.get(shift+16)));
         //noinspection deprecation
-        nvps.addPart("spam_comments", new StringBody(jsonElementValue.get(11)));
+        nvps.addPart("spam_comments", new StringBody(jsonElementValue.get(shift+11)));
         //noinspection deprecation
-        nvps.addPart("spam_selfposts", new StringBody(jsonElementValue.get(12)));
+        nvps.addPart("spam_selfposts", new StringBody(jsonElementValue.get(shift+12)));
         //noinspection deprecation
-        nvps.addPart("spam_links", new StringBody(jsonElementValue.get(1)));
+        nvps.addPart("spam_links", new StringBody(jsonElementValue.get(shift+1)));
         //noinspection deprecation
-        nvps.addPart("submit_text_label", new StringBody(jsonElementValue.get(9)));
+        nvps.addPart("submit_text_label", new StringBody(jsonElementValue.get(shift+9)));
         //noinspection deprecation
-        nvps.addPart("submit_text", new StringBody(jsonElementValue.get(3)));
+        nvps.addPart("submit_text", new StringBody(jsonElementValue.get(shift+3)));
         //noinspection deprecation
-        nvps.addPart("submit_link_label", new StringBody(jsonElementValue.get(24)));
+        nvps.addPart("submit_link_label", new StringBody(jsonElementValue.get(shift+24)));
         //noinspection deprecation
-        nvps.addPart("title", new StringBody(jsonElementValue.get(8)));
+        nvps.addPart("title", new StringBody(jsonElementValue.get(shift+8)));
         //noinspection deprecation
-        nvps.addPart("wiki_edit_age", new StringBody(jsonElementValue.get(14)));
+        nvps.addPart("wiki_edit_age", new StringBody(jsonElementValue.get(shift+14)));
         //noinspection deprecation
-        nvps.addPart("wiki_edit_karma", new StringBody(jsonElementValue.get(23)));
-        //nvps.addPart("lang", new StringBody(jsonElementValue.get(6)));
+        nvps.addPart("wiki_edit_karma", new StringBody(jsonElementValue.get(shift+23)));
+        //nvps.addPart("lang", new StringBody(jsonElementValue.get(shift+6)));
         //noinspection deprecation
-        nvps.addPart("wikimode", new StringBody(jsonElementValue.get(26)));
+        nvps.addPart("wikimode", new StringBody(jsonElementValue.get(shift+26)));
         //noinspection deprecation
         nvps.addPart("api_type", new StringBody("json"));
         //noinspection deprecation
         nvps.addPart("css_on_cname", new StringBody("true"));
         //noinspection deprecation
-        nvps.addPart("link_type", new StringBody(jsonElementValue.get(22)));
+        nvps.addPart("link_type", new StringBody(jsonElementValue.get(shift+22)));
         //noinspection deprecation
-        nvps.addPart("name", new StringBody(jsonElementValue.get(8)));
+        nvps.addPart("name", new StringBody(jsonElementValue.get(shift+8)));
         //noinspection deprecation
         nvps.addPart("show_cname_sidebar", new StringBody("true"));
         //noinspection deprecation
-        nvps.addPart("sr", new StringBody(jsonElementValue.get(10)));
+        nvps.addPart("sr", new StringBody(jsonElementValue.get(shift+10)));
         //noinspection deprecation
         nvps.addPart("suggested_comment_sort", new StringBody("none"));
         //noinspection deprecation
-        nvps.addPart("type", new StringBody(jsonElementValue.get(19)));
+        nvps.addPart("type", new StringBody(jsonElementValue.get(shift+19)));
 
         nvps.addPart("allow_top",new StringBody("true"));
         String descriptionRename = jsonElementValue.get(6);
@@ -151,8 +152,8 @@ public class SidebarUpdater {
                         + currentCommentInformation[1][2]);
         //+ " points";*/
         //replaces the date in Month 00 0000 format
-        /*descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
-                commentInformation[0][3]).replace(",", "");*/
+        descriptionRename = descriptionRename.replaceAll("[A-z]* [0-9]* [0-9][0-9][0-9][0-9]",
+                commentInformation[0][3]).replace(",", "");
         //replaces date in 00 Month 0000 format
         descriptionRename = descriptionRename.replaceAll("([0-9]|[0-9][0-9]) [A-z]* [0-9][0-9][0-9][0-9]",
                 commentInformation[0][3].replace(",", "").replaceAll(" [A-Za-z]* ", "").replaceAll("[0-9][0-9][0-9][0-9]", "")

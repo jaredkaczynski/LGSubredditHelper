@@ -178,7 +178,7 @@ public class XMLScraper {
         assert commentsSubmission != null;
         //Grab homescreen
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("elun")) {
+            if (aCommentsSubmission.getBody().contains("homescreen")) {
                 System.out.println(aCommentsSubmission + " comment for HS");
                 returnedComments.add(aCommentsSubmission);
                 break;
@@ -187,7 +187,7 @@ public class XMLScraper {
         //grab photo
         //requiredsize = requiredsize - returnedComments.size();
         for (Comment aCommentsSubmission : commentsSubmission) {
-            if (aCommentsSubmission.getBody().contains("Mist")) {
+            if (aCommentsSubmission.getBody().contains("Picture")) {
                 if (!returnedComments.contains(aCommentsSubmission)) {
                     System.out.println(aCommentsSubmission + " comment for P");
                     returnedComments.add(aCommentsSubmission);
